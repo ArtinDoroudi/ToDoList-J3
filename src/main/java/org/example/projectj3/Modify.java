@@ -16,23 +16,23 @@ import java.io.IOException;
 
 import static javafx.application.Application.launch;
 
-public class Adding extends Application {
+public class Modify extends Application {
     public void start(Stage stage){
-        Text Task = new Text("Task");
-        Text Description = new Text("Description");
-        TextArea TaskName = new TextArea("Add your new task Here");
-        TextArea TaskDescription = new TextArea("Description");
+        Text UpdateTask = new Text("Update Task");
+        Text UpdateDescription = new Text("Update Description");
+        TextArea UpdateTaskName = new TextArea("Update your task Here");
+        TextArea UpdateTaskDescription = new TextArea(" Update Description");
         Button Dashboard = new Button("Dashboard");
         Button About = new Button("About");
         Button Help = new Button("Help");
 
-        Task.setStyle("-fx-font-size: 23px; -fx-font-weight: bold;");
+        UpdateTask.setStyle("-fx-font-size: 23px; -fx-font-weight: bold;");
 
-        Description.setStyle("-fx-font-size: 23px; -fx-font-weight: bold;");
+        UpdateDescription.setStyle("-fx-font-size: 23px; -fx-font-weight: bold;");
 
 
-        TaskName.setMaxSize(500, 50);
-        TaskDescription.setMaxSize(500, 200);
+        UpdateTaskName.setMaxSize(500, 50);
+        UpdateTaskDescription.setMaxSize(500, 200);
 
 
 
@@ -42,7 +42,7 @@ public class Adding extends Application {
         HBox hbox = new HBox();
         hbox.getChildren().addAll(Dashboard,About,Help);
         VBox vbox = new VBox();
-        vbox.getChildren().addAll(Task,TaskName,Description,TaskDescription);
+        vbox.getChildren().addAll(UpdateTask,UpdateTaskName,UpdateDescription,UpdateTaskDescription);
         vbox.setAlignment(Pos.CENTER);
 
         BorderPane borderPane = new BorderPane();
@@ -54,7 +54,7 @@ public class Adding extends Application {
 
         Scene scene = new Scene(borderPane, 1000, 500);
 
-        stage.setTitle("Adding New Task");
+        stage.setTitle("Update Task");
         stage.setScene(scene);
         stage.show();
     }
@@ -63,3 +63,4 @@ public class Adding extends Application {
         launch();
     }
 }
+

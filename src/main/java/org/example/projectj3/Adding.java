@@ -25,7 +25,7 @@ public class Adding extends Application {
         Button Dashboard = new Button("Dashboard");
         Button About = new Button("About");
         Button Help = new Button("Help");
-        Button Submit = new Button("Submit");
+        Button Submit = new Button("Submit");//add new submit button
 
         Task.setStyle("-fx-font-size: 23px; -fx-font-weight: bold;");
 

@@ -30,8 +30,24 @@ public class Adding extends Application {
         Button Dashboard = new Button("Dashboard");
         Button About = new Button("About");
         Button Help = new Button("Help");
-        Button Submit = new Button("Submit");//add new submit button
-        ComboBox Tags = new ComboBox();
+        Button Submit = new Button("Submit"); // add new submit button
+        ComboBox<String> Tags = new ComboBox<>();
+        Tags.getItems().addAll("Important", "Gym", "School", "Family");
+
+        // Event Handlers for the Buttons
+        Dashboard.setOnAction(event -> {
+            System.out.println("Dashboard button clicked!");
+        });
+        About.setOnAction(event -> {
+            System.out.println("About button clicked!");
+        });
+        Help.setOnAction(event -> {
+            System.out.println("Help button clicked!");
+        });
+        Submit.setOnAction(event -> {
+            System.out.println("Submit button clicked!");
+        });
+
 
         Task.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
 

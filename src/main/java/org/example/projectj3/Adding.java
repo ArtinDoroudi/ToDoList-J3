@@ -25,7 +25,28 @@ public class Adding extends Application {
         Button Dashboard = new Button("Dashboard");
         Button About = new Button("About");
         Button Help = new Button("Help");
-        Button Submit = new Button("Submit");//add new submit button
+        Button Submit = new Button("Submit");
+
+        // Step 2: Create Event Handlers for the Buttons
+        Dashboard.setOnAction(event -> {
+            System.out.println("Dashboard button clicked!");
+        });
+
+        About.setOnAction(event -> {
+            System.out.println("About button clicked!");
+        });
+
+        Help.setOnAction(event -> {
+            System.out.println("Help button clicked!");
+        });
+
+        Submit.setOnAction(event -> {
+            System.out.println("Submit button clicked!");
+
+        });
+
+
+
 
         Task.setStyle("-fx-font-size: 23px; -fx-font-weight: bold;");
 

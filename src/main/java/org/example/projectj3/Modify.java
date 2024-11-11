@@ -25,6 +25,7 @@ public class Modify extends Application {
         Button Dashboard = new Button("Dashboard");
         Button About = new Button("About");
         Button Help = new Button("Help");
+        Button Submit = new Button("Submit");
 
         UpdateTask.setStyle("-fx-font-size: 23px; -fx-font-weight: bold;");
 
@@ -36,14 +37,18 @@ public class Modify extends Application {
 
 
 
-        Dashboard.setStyle("-fx-background-color: Translecent; -fx-border-color: Translecent; -fx-font-size: 20; -fx-font-weight: bold;");
-        About.setStyle("-fx-background-color: Translecent; -fx-border-color: Translecent; -fx-font-size: 20; -fx-font-weight: bold;");
-        Help.setStyle("-fx-background-color: Translecent; -fx-border-color: Translecent; -fx-font-size: 20; -fx-font-weight: bold;");
+        Dashboard.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 20; -fx-font-weight: bold;");
+        About.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 20; -fx-font-weight: bold;");
+        Help.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 20; -fx-font-weight: bold;");
         HBox hbox = new HBox();
         hbox.getChildren().addAll(Dashboard,About,Help);
+
         VBox vbox = new VBox();
-        vbox.getChildren().addAll(UpdateTask,UpdateTaskName,UpdateDescription,UpdateTaskDescription);
+        vbox.getChildren().addAll(UpdateTask,UpdateTaskName,UpdateDescription,UpdateTaskDescription, Submit);
         vbox.setAlignment(Pos.CENTER);
+        vbox.setSpacing(10);
+
+        Submit.setStyle("-fx-background-color: #8cfa8c; -fx-font-size: 15; -fx-font-weight: bold; ");
 
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(vbox);

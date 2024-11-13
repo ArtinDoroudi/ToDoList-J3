@@ -2,6 +2,7 @@ package org.example.projectj3.entity;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -44,6 +45,27 @@ public class User {
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("User added successfully.");
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean authenticateUser(Connection connection, String userName, String password) {
+        String query = "SELECT * FROM user_table WHERE User_Name = ? AND Password = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, userName);
+            statement.setString(2, password);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                // User authenticated; set user properties based on the database entry
+                this.userId = ((ResultSet) resultSet).getInt("User_ID");
+                this.userName = resultSet.getString("User_Name");
+                this.email = resultSet.getString("Email");
+                this.isPremium = resultSet.getBoolean("is_Premium");
                 return true;
             }
         } catch (SQLException e) {

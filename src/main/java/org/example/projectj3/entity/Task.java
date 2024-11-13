@@ -86,4 +86,33 @@ public class Task {
         }
         return false;
     }
+
+    // Inside Task class
+    public boolean toggleCompletionStatus(Connection connection) {
+        String toggleQuery = "UPDATE task_table SET is_Completed = NOT is_Completed WHERE Task_ID = ?";
+        String fetchStatusQuery = "SELECT is_Completed FROM task_table WHERE Task_ID = ?";
+
+        try (PreparedStatement toggleStatement = connection.prepareStatement(toggleQuery);
+             PreparedStatement fetchStatusStatement = connection.prepareStatement(fetchStatusQuery)) {
+
+            toggleStatement.setInt(1, this.taskId);
+            int rowsUpdated = toggleStatement.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                // fetch the updated status from the database
+                fetchStatusStatement.setInt(1, this.taskId);
+                ResultSet resultSet = fetchStatusStatement.executeQuery();
+                if (resultSet.next()) {
+                    // update isCompleted
+                    this.isCompleted = resultSet.getBoolean("is_Completed");
+                    System.out.println("Task completion status toggled successfully. New status: " + (isCompleted ? "Completed" : "Not Completed"));
+                }
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

@@ -20,7 +20,11 @@ public class Database {
                                 DB_USER,
                                 DB_PASSWORD);
                 System.out.println("Connected to database!");
-                createTable(TABLE_LOCATION, CREATE_TABLE_LOCATION, connection);
+                createTable("users", CREATE_TABLE_USER, connection);
+                createTable("tasks", CREATE_TABLE_TASK, connection);
+                createTable("tags", CREATE_TABLE_TAG, connection);
+                createTable("user_tasks", CREATE_TABLE_USER_TASK, connection);
+                createTable("task_tags", CREATE_TABLE_TASK_TAG, connection);
             } catch (Exception e) {
                 e.printStackTrace();
             }

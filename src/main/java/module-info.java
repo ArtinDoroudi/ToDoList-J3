@@ -6,4 +6,6 @@ module org.example.projectj3 {
 
     opens org.example.projectj3 to javafx.fxml;
     exports org.example.projectj3;
+    exports org.example.projectj3.entity;
+    opens org.example.projectj3.entity to javafx.fxml;
 }

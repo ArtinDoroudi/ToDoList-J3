@@ -3,6 +3,7 @@ package org.example.projectj3.entity;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 public class User {
     private int userId;
@@ -49,5 +50,9 @@ public class User {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public List<Task> getTasks(Connection connection) {
+        return Task.getTasksByUserId(this.userId, connection);
     }
 }

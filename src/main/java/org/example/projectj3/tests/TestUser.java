@@ -1,4 +1,4 @@
-package org.example.projectj3;
+package org.example.projectj3.tests;
 
 import org.example.projectj3.Database.Database;
 import org.example.projectj3.entity.User;

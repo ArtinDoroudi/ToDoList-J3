@@ -36,6 +36,7 @@ public class DBConst {
                     TASK_COLUMN_DUE_DATE + " DATE, " +
                     TASK_COLUMN_IS_COMPLETED + " BOOLEAN DEFAULT FALSE, " +
                     TASK_COLUMN_IS_PINNED + " BOOLEAN DEFAULT FALSE, " +
+                    "deleted BOOLEAN DEFAULT 0, " +
                     "PRIMARY KEY(" + TASK_COLUMN_ID + "));";
 
     // Tags Table

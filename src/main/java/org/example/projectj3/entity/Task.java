@@ -35,7 +35,7 @@ public class Task {
         List<Task> tasks = new ArrayList<>();
         String query = "SELECT * FROM task_table t " +
                 "JOIN user_task_table ut ON t.Task_ID = ut.Task_ID " +
-                "WHERE ut.User_ID = ?";
+                "WHERE ut.User_ID = ? AND t.deleted = 0";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, userId);
@@ -87,7 +87,6 @@ public class Task {
         return false;
     }
 
-    // Inside Task class
     public boolean toggleCompletionStatus(Connection connection) {
         String toggleQuery = "UPDATE task_table SET is_Completed = NOT is_Completed WHERE Task_ID = ?";
         String fetchStatusQuery = "SELECT is_Completed FROM task_table WHERE Task_ID = ?";
@@ -107,6 +106,46 @@ public class Task {
                     this.isCompleted = resultSet.getBoolean("is_Completed");
                     System.out.println("Task completion status toggled successfully. New status: " + (isCompleted ? "Completed" : "Not Completed"));
                 }
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // FUTURE NOTE: for pinning a task we can use this method(with no change in title, description, isCompleted)
+    public boolean updateTask(Connection connection, String newTitle, String newDescription, boolean newIsPinned) {
+        String query = "UPDATE task_table SET Task_Title = ?, Task_Description = ?, is_Pinned = ? WHERE Task_ID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, newTitle);
+            statement.setString(2, newDescription);
+            statement.setBoolean(3, newIsPinned);
+            statement.setInt(4, this.taskId);
+
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated > 0) {
+                // Update in-memory task details
+                this.title = newTitle;
+                this.description = newDescription;
+                this.isPinned = newIsPinned;
+                System.out.println("Task updated successfully.");
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean deleteTask(Connection connection) {
+        String query = "UPDATE task_table SET deleted = 1 WHERE Task_ID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, this.taskId);
+            int rowsUpdated = statement.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                System.out.println("Task marked as deleted successfully.");
                 return true;
             }
         } catch (SQLException e) {

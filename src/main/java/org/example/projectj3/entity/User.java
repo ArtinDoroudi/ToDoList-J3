@@ -53,6 +53,26 @@ public class User {
         return false;
     }
 
+    public boolean signUpUser(Connection connection) {
+        // Check if username already exists
+        String checkQuery = "SELECT * FROM user_table WHERE User_Name = ?";
+        try (PreparedStatement checkStmt = connection.prepareStatement(checkQuery)) {
+            checkStmt.setString(1, this.userName);
+            ResultSet resultSet = checkStmt.executeQuery();
+
+            if (resultSet.next()) {
+                System.out.println("Username already exists. Please choose a different username.");
+                return false;
+            }
+
+            // Username is unique, so proceed to add the user
+            return addUser(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean authenticateUser(Connection connection, String userName, String password) {
         String query = "SELECT * FROM user_table WHERE User_Name = ? AND Password = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {

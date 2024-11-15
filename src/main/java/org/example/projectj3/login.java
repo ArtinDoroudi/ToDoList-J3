@@ -1,6 +1,6 @@
 package org.example.projectj3;
 
-//java final project
+// Java final project
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -18,29 +18,36 @@ public class login extends Application {
     public void start(Stage primaryStage) {
         // Setting up gridpane
         GridPane grid = new GridPane();
-        //positionning it to center
+        // Positioning it to center
         grid.setAlignment(Pos.CENTER);
-        //spacing horzontal and vertical between rows and column
+        // Spacing horizontal and vertical between rows and columns
         grid.setHgap(10);
         grid.setVgap(10);
 
+        // Set a tan background for the grid
+        grid.setStyle("-fx-background-color: tan;");  // Tan background
+
         // Creating elements
         Label userName = new Label("Username:");
+        userName.setStyle("-fx-font-weight: bold; -fx-text-fill: black; -fx-font-size: 14px;");
         grid.add(userName, 0, 1);
 
         TextField usernameEntered = new TextField();
         grid.add(usernameEntered, 1, 1);
 
         Label passwordEntered = new Label("Password:");
+        passwordEntered.setStyle("-fx-font-weight: bold; -fx-text-fill: black; -fx-font-size: 14px;");
         grid.add(passwordEntered, 0, 2);
 
         PasswordField passwordTextfield = new PasswordField();
         grid.add(passwordTextfield, 1, 2);
 
         Button loginButton = new Button("Login");
+        loginButton.setStyle("-fx-background-color: #8cfa8c; -fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: black;");
         grid.add(loginButton, 1, 3);
 
         Label message = new Label();
+        message.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
         grid.add(message, 1, 4);
         message.setTextFill(Color.RED);
 
@@ -51,9 +58,10 @@ public class login extends Application {
 
             if (username.isEmpty() || password.isEmpty()) {
                 message.setText("Please enter both username and password.");
+                message.setTextFill(Color.RED);  // Red text for error
             } else {
-                message.setTextFill(Color.GREEN);
                 message.setText("Login successful!");
+                message.setTextFill(Color.GREEN);  // Green text for success
             }
         });
 

@@ -36,6 +36,10 @@ public class register extends Application {
         grid.add(confirmPasswordLabel, 0, 2);
         PasswordField confirmPasswordField = new PasswordField();
         grid.add(confirmPasswordField, 1, 2);
+
+        // Register button
+        Button registerButton = new Button("Register");
+        grid.add(registerButton, 1, 3);
     }
     public static void main(String[] args) {
         launch(args);

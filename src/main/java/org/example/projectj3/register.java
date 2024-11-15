@@ -53,6 +53,19 @@ public class register extends Application {
                 alert(Alert.AlertType.ERROR, "Registration Failed", "Passwords do not match. Please try again.");
             }
         });
+
+        // Create and set scene
+        Scene scene = new Scene(grid, 300, 200);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+    //creating the alert method
+    private void alert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
     public static void main(String[] args) {
         launch(args);

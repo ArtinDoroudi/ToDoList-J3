@@ -40,6 +40,19 @@ public class register extends Application {
         // Register button
         Button registerButton = new Button("Register");
         grid.add(registerButton, 1, 3);
+
+        // Register button action
+        registerButton.setOnAction(event -> {
+            String username = usernameField.getText();
+            String password = passwordField.getText();
+            String confirmPassword = confirmPasswordField.getText();
+
+            if (password.equals(confirmPassword)) {
+                alert(Alert.AlertType.INFORMATION, "Registration Successful", "Welcome, " + username + "!");
+            } else {
+                alert(Alert.AlertType.ERROR, "Registration Failed", "Passwords do not match. Please try again.");
+            }
+        });
     }
     public static void main(String[] args) {
         launch(args);

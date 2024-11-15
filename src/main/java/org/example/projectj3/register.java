@@ -24,6 +24,12 @@ public class register extends Application {
         grid.add(usernameLabel, 0, 0);
         TextField usernameField = new TextField();
         grid.add(usernameField, 1, 0);
+
+        // Password label and field
+        Label passwordLabel = new Label("Password:");
+        grid.add(passwordLabel, 0, 1);
+        PasswordField passwordField = new PasswordField();
+        grid.add(passwordField, 1, 1);
     }
     public static void main(String[] args) {
         launch(args);

@@ -30,6 +30,12 @@ public class register extends Application {
         grid.add(passwordLabel, 0, 1);
         PasswordField passwordField = new PasswordField();
         grid.add(passwordField, 1, 1);
+
+        // Confirm Password label and field
+        Label confirmPasswordLabel = new Label("Confirm Password:");
+        grid.add(confirmPasswordLabel, 0, 2);
+        PasswordField confirmPasswordField = new PasswordField();
+        grid.add(confirmPasswordField, 1, 2);
     }
     public static void main(String[] args) {
         launch(args);

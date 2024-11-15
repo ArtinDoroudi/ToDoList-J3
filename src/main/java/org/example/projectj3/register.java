@@ -33,6 +33,7 @@ public class register extends Application {
 
         // Password label and field
         Label passwordLabel = new Label("Password:");
+        passwordLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: black; -fx-font-size: 14px;");
         grid.add(passwordLabel, 0, 1);
 
         PasswordField passwordField = new PasswordField();

@@ -14,7 +14,7 @@ public class Database {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 connection = DriverManager
-                        .getConnection("jdbc:mysql://php.scweb.ca/" + DB_NAME
+                        .getConnection("jdbc:mysql://localhost:3306/" + DB_NAME
                                         // + "?useSSL=false",
                                         + "?serverTimezone=UTC",
                                 DB_USER,

@@ -1,8 +1,13 @@
 package org.example.projectj3;
 
 import javafx.application.Application;
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -29,13 +34,25 @@ public class DataVisualization extends Application {
         HBox hbox = new HBox();
         hbox.getChildren().addAll(Dashboard,About,Help);
 
+        ObservableList<PieChart.Data> pieChart =
+                FXCollections.observableArrayList(
+                        new PieChart.Data("Family", 13),
+                        new PieChart.Data("School", 25),
+                        new PieChart.Data("Gym", 10),
+                        new PieChart.Data("Important", 22));
+        final PieChart chart = new PieChart(pieChart);
+        chart.setTitle("Tags Used");
+
+        //"Important", "Gym", "School", "Family"
 
 
         Submit.setStyle("-fx-background-color: #8cfa8c; -fx-font-size: 15; -fx-font-weight: bold; ");
 
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(hbox);
+        borderPane.setCenter(chart);
         borderPane.setStyle("-fx-background-color: TAN");
+
 
 
 

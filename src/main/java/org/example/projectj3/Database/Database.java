@@ -1,6 +1,6 @@
 package org.example.projectj3.Database;
-import java.sql.*;
 
+import java.sql.*;
 import org.example.projectj3.Database.Const.*;
 
 import static org.example.projectj3.Database.Const.*;
@@ -9,6 +9,7 @@ import static org.example.projectj3.Database.DBConst.*;
 public class Database {
     private static Database instance;
     private Connection connection = null;
+
     public Database() {
         if(connection == null) {
             try {
@@ -48,7 +49,6 @@ public class Database {
             connection.close();
             System.out.println("Connection closed.");
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             connection = null;
             e.printStackTrace();
         }
@@ -66,4 +66,29 @@ public class Database {
             System.out.println(tableName + " table created");
         }
     }
+
+    // Method to add a new task
+    public boolean addTask(String taskName, String description, String dueDate) {
+        String sql = "INSERT INTO tasks (task_name, description, due_date) VALUES (?, ?, ?)";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, taskName);
+            statement.setString(2, description);
+            statement.setString(3, dueDate);
+
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Task added successfully!");
+                return true;
+            } else {
+                System.out.println("Failed to add task.");
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
 }

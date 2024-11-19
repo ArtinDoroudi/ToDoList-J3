@@ -4,24 +4,30 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class mainPage extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Main Page");
+        // Header with buttons and label
+        HBox header = new HBox(10);
+        header.setPadding(new Insets(10));
+        header.setAlignment(Pos.CENTER_LEFT);
 
-       
+        Button dashboardButton = new Button("Dashboard");
+        Button aboutButton = new Button("About");
+        Button helpButton = new Button("Help");
+        Label welcomeLabel = new Label("Welcome");
+        HBox.setHgrow(welcomeLabel, Priority.ALWAYS); // Push Welcome label to the right
+        welcomeLabel.setStyle("-fx-text-fill: white;");
 
-        // Button to read from database
-        Button readButton = new Button("Read from Database");
-        readButton.setStyle("-fx-font-weight: bold; -fx-background-color: #a1d3f4; -fx-font-size: 14px; -fx-text-fill: black;");
-        grid.add(readButton, 0, 0);
-
+        
         // Button to delete from database
         Button deleteButton = new Button("Delete from Database");
         deleteButton.setStyle("-fx-font-weight: bold; -fx-background-color: #f4a1a1; -fx-font-size: 14px; -fx-text-fill: black;");

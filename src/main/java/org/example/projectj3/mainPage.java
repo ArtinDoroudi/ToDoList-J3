@@ -32,7 +32,6 @@ public class mainPage extends Application {
 
         // Add the buttons and label to the header
         header.getChildren().addAll(dashboardButton, aboutButton, helpButton, welcomeLabel);
-        header.setStyle("-fx-background-color: #336699;"); // Set the background color of the header
 
         // Create a vertical box (VBox) for task buttons
         VBox taskButtons = new VBox(10); // 10px spacing between elements in the VBox

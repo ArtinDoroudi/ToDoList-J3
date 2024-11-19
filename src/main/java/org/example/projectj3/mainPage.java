@@ -24,19 +24,20 @@ public class mainPage extends Application {
         Button aboutButton = new Button("About");
         Button helpButton = new Button("Help");
         Label welcomeLabel = new Label("Welcome");
-        HBox.setHgrow(welcomeLabel, Priority.ALWAYS); // Push Welcome label to the right
+        // Push Welcome label to the right
+
+        HBox.setHgrow(welcomeLabel, Priority.ALWAYS);
         welcomeLabel.setStyle("-fx-text-fill: white;");
 
-        
-        // Button to delete from database
-        Button deleteButton = new Button("Delete from Database");
-        deleteButton.setStyle("-fx-font-weight: bold; -fx-background-color: #f4a1a1; -fx-font-size: 14px; -fx-text-fill: black;");
-        grid.add(deleteButton, 0, 1);
+        header.getChildren().addAll(dashboardButton, aboutButton, helpButton, welcomeLabel);
+        header.setStyle("-fx-background-color: #336699;");
 
-        // Button to sign out
-        Button signOutButton = new Button("Sign Out");
-        signOutButton.setStyle("-fx-font-weight: bold; -fx-background-color: #f2f2f2; -fx-font-size: 14px; -fx-text-fill: black;");
-        grid.add(signOutButton, 0, 2);
+        // Task Section
+        VBox taskButtons = new VBox(10);
+        taskButtons.setPadding(new Insets(10));
+
+        Button createTaskButton = new Button("Create New Task");
+        createTaskButton.setOnAction(e -> System.out.println("Create New Task clicked"));
 
         // Event handling for Read button
         readButton.setOnAction(event -> {

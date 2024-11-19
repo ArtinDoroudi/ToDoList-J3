@@ -15,13 +15,7 @@ public class mainPage extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Main Page");
 
-        // Create grid layout
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(20));
-        grid.setVgap(20);
-        grid.setHgap(20);
-        grid.setAlignment(Pos.CENTER);
-        grid.setStyle("-fx-background-color: tan;"); // Set background color to tan
+       
 
         // Button to read from database
         Button readButton = new Button("Read from Database");

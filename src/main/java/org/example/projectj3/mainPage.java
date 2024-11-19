@@ -11,7 +11,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class MainPage extends Application {
+public class mainPage extends Application {
 
     @Override
     public void start(Stage primaryStage) {
@@ -70,21 +70,17 @@ public class MainPage extends Application {
             // Add the task row to the VBox
             taskButtons.getChildren().add(taskRow);
         }
-        // Event handling for Delete button
-        deleteButton.setOnAction(event -> {
-            // Mock database delete operation
-            showAlert(Alert.AlertType.WARNING, "Database Delete", "Data deleted from the database successfully!");
-        });
+        // Create the main layout as a vertical box (VBox) containing the header and task buttons
+        VBox mainLayout = new VBox(20, header, taskButtons); // 20px spacing between header and tasks
+        mainLayout.setPadding(new Insets(10)); // Set padding around the VBox
 
-        // Event handling for Sign Out button
-        signOutButton.setOnAction(event -> {
-            // Go back to the login page or close the application
-            showAlert(Alert.AlertType.INFORMATION, "Sign Out", "You have been signed out.");
-            primaryStage.close();
-        });
+        // Create a scene with the main layout and set its dimensions
+        Scene scene = new Scene(mainLayout, 600, 400);
 
-        // Create and set the scene
-        Scene scene = new Scene(grid, 350, 300);
+        // Set the title of the primary stage (window)
+        primaryStage.setTitle("Task Manager");
+
+        // Add the scene to the stage and display it
         primaryStage.setScene(scene);
         primaryStage.show();
     }

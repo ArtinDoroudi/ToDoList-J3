@@ -38,19 +38,19 @@ public class DataVisualization extends Application {
         return application;
     }
        public PieChart generateChart() {
-            TagTable table = new TagTable();
-            ArrayList<Tag> tags = table.getAllTags();
-            chart.getData().clear();
-            ArrayList<PieChart.Data> pie = new ArrayList<>();
-            for (Tag tag : tags) {
-                pie.add(new PieChart.Data(tag.getName()));
-                ObservableList<PieChart.Data> data =
-                        FXCollections.observableArrayList();
-                chart.setData(data);
-                return chart;
-            }
+           TagTable table = new TagTable();
+           ArrayList<Tag> tags = table.getAllTags();
+           chart.getData().clear();
+           ArrayList<PieChart.Data> pie = new ArrayList<>();
+           for (Tag tag : tags) {
+               pie.add(new PieChart.Data(tag.getName()));
+           }
+               ObservableList<PieChart.Data> data =
+                       FXCollections.observableArrayList();
+               chart.setData(data);
+               return chart;
+           }
 
-        }
     public void start(Stage stage){
         Button Dashboard = new Button("Dashboard");
         Button About = new Button("About");

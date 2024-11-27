@@ -32,11 +32,9 @@ public class mainPage extends Application {
         helpButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-font-size: 23; -fx-font-weight: bold;");
         welcomeLabel.setStyle("-fx-text-fill: black; -fx-font-size: 23; -fx-font-weight: bold;");
 
+        HBox.setHgrow(welcomeLabel, Priority.ALWAYS); // Push label to the right
+        topBar.getChildren().addAll(dashboardButton, aboutButton, helpButton, welcomeLabel);
 
-        // Task section with centered layout
-        VBox taskSection = new VBox(15);
-        taskSection.setPadding(new Insets(10));
-        taskSection.setAlignment(Pos.CENTER);
 
         Button createTaskButton = new Button("Create New Task");
         createTaskButton.setOnAction(e -> System.out.println("Create New Task clicked"));

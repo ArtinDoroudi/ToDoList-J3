@@ -16,7 +16,8 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.IOException;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 
 import static javafx.application.Application.launch;
 
@@ -34,6 +35,12 @@ public class Modify extends Application {
         Button Help = new Button("Help");
         Button Submit = new Button("Submit");
         ComboBox Tags = new ComboBox();
+
+        Image image = new Image(getClass().getResource("/images/update.jpg").toExternalForm());
+        ImageView imageView = new ImageView(image);
+
+        imageView.setFitWidth(80);
+        imageView.setFitHeight(80);
 
         UpdateTask.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
 
@@ -88,8 +95,14 @@ public class Modify extends Application {
         Dashboard.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 20; -fx-font-weight: bold;");
         About.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 20; -fx-font-weight: bold;");
         Help.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 20; -fx-font-weight: bold;");
+
         HBox hbox = new HBox();
         hbox.getChildren().addAll(Dashboard,About,Help);
+
+        HBox imagepane = new HBox();
+        imagepane.getChildren().add(imageView);
+        
+
 
         Tags.getItems().addAll("Important", "Gym", "School", "Family");
 
@@ -100,9 +113,13 @@ public class Modify extends Application {
 
         Submit.setStyle("-fx-background-color: #8cfa8c; -fx-font-size: 15; -fx-font-weight: bold; ");
 
+        BorderPane Top = new BorderPane();
+        Top.setRight(imagepane);
+        Top.setLeft(hbox);
+
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(vbox);
-        borderPane.setTop(hbox);
+        borderPane.setTop(Top);
         borderPane.setStyle("-fx-background-color: TAN");
 
 

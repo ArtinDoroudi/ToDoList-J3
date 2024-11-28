@@ -3,6 +3,7 @@ package org.example.projectj3.GUI;
 import javafx.animation.ScaleTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -39,7 +40,7 @@ public class Modify extends Application {
         Image image = new Image(getClass().getResource("/images/update.jpg").toExternalForm());
         ImageView imageView = new ImageView(image);
 
-        imageView.setFitWidth(80);
+        imageView.setFitWidth(200);
         imageView.setFitHeight(80);
 
         UpdateTask.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
@@ -101,7 +102,8 @@ public class Modify extends Application {
 
         HBox imagepane = new HBox();
         imagepane.getChildren().add(imageView);
-        
+       // imagepane.setPadding(new Insets(10));
+
 
 
         Tags.getItems().addAll("Important", "Gym", "School", "Family");
@@ -109,7 +111,7 @@ public class Modify extends Application {
         VBox vbox = new VBox();
         vbox.getChildren().addAll(UpdateTask,UpdateTaskName,UpdateDescription,UpdateTaskDescription,Date, dueDate, tag, Tags, Submit);
         vbox.setAlignment(Pos.CENTER);
-        vbox.setSpacing(5);
+        vbox.setSpacing(3);
 
         Submit.setStyle("-fx-background-color: #8cfa8c; -fx-font-size: 15; -fx-font-weight: bold; ");
 

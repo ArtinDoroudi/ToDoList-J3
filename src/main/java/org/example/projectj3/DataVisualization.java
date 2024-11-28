@@ -1,5 +1,6 @@
 package org.example.projectj3;
 
+import javafx.animation.ScaleTransition;
 import javafx.application.Application;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -18,12 +19,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import javax.swing.text.html.HTML;
 import java.util.ArrayList;
 
 public class DataVisualization extends Application {
-    private static DataVisualization application;
+    /*private static DataVisualization application;
     private final PieChart chart;
     private DataVisualization(){
         chart = new PieChart();
@@ -36,7 +38,7 @@ public class DataVisualization extends Application {
             application = new DataVisualization();
         }
         return application;
-    }
+    }*/
    /*    public PieChart generateChart() {
            TagTable table = new TagTable();
            ArrayList<Tag> tags = table.getAllTags();
@@ -60,14 +62,49 @@ public class DataVisualization extends Application {
 
 
 
-        Dashboard.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 20; -fx-font-weight: bold;");
-        About.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 20; -fx-font-weight: bold;");
-        Help.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 20; -fx-font-weight: bold;");
+        Dashboard.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 21; -fx-font-weight: bold;");
+        About.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 21; -fx-font-weight: bold;");
+        Help.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 21; -fx-font-weight: bold;");
         HBox hbox = new HBox();
         hbox.getChildren().addAll(Dashboard,About,Help);
 
 
-
+        Dashboard.setOnMouseEntered(e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Dashboard);
+            scaleTransition.setToX(1.1);
+            scaleTransition.setToY(1.1);
+            scaleTransition.play();
+        });
+        Dashboard.setOnMouseExited(e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Dashboard);
+            scaleTransition.setToX(1.0);
+            scaleTransition.setToY(1.0);
+            scaleTransition.play();
+        });
+        About.setOnMouseEntered(e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), About);
+            scaleTransition.setToX(1.1);
+            scaleTransition.setToY(1.1);
+            scaleTransition.play();
+        });
+        About.setOnMouseExited(e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), About);
+            scaleTransition.setToX(1.0);
+            scaleTransition.setToY(1.0);
+            scaleTransition.play();
+        });
+        Help.setOnMouseEntered(e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Help);
+            scaleTransition.setToX(1.1);
+            scaleTransition.setToY(1.1);
+            scaleTransition.play();
+        });
+        Help.setOnMouseExited(e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Help);
+            scaleTransition.setToX(1.0);
+            scaleTransition.setToY(1.0);
+            scaleTransition.play();
+        });
 
 
 
@@ -89,7 +126,7 @@ public class DataVisualization extends Application {
 
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(hbox);
-        borderPane.setCenter(chart);
+        //borderPane.setCenter(chart);
         borderPane.setStyle("-fx-background-color: TAN");
 
 

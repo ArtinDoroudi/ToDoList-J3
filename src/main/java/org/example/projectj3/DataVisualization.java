@@ -29,7 +29,7 @@ public class DataVisualization extends Application {
         chart = new PieChart();
         chart.setTitle("All Tags Used");
         chart.setLabelsVisible(true);
-        generateChart();
+       // generateChart();
     }
     public static DataVisualization getInstance(){
         if(application == null){
@@ -37,7 +37,7 @@ public class DataVisualization extends Application {
         }
         return application;
     }
-       public PieChart generateChart() {
+   /*    public PieChart generateChart() {
            TagTable table = new TagTable();
            ArrayList<Tag> tags = table.getAllTags();
            chart.getData().clear();
@@ -49,7 +49,7 @@ public class DataVisualization extends Application {
                        FXCollections.observableArrayList();
                chart.setData(data);
                return chart;
-           }
+           }*/
 
     public void start(Stage stage){
         Button Dashboard = new Button("Dashboard");

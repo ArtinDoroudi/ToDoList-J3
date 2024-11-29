@@ -35,6 +35,9 @@ public class mainPage extends Application {
         HBox.setHgrow(welcomeLabel, Priority.ALWAYS); // Push label to the right
         topBar.getChildren().addAll(dashboardButton, aboutButton, helpButton, welcomeLabel);
 
+        // Task section
+        VBox taskSection = new VBox(10); // Initialize taskSection
+        taskSection.setPadding(new Insets(10));
 
         Button createTaskButton = new Button("Create New Task");
         createTaskButton.setOnAction(e -> System.out.println("Create New Task clicked"));

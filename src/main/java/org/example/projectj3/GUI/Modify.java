@@ -1,4 +1,4 @@
-package org.example.projectj3;
+package org.example.projectj3.GUI;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

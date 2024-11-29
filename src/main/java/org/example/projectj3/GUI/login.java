@@ -1,4 +1,4 @@
-package org.example.projectj3;
+package org.example.projectj3.GUI;
 
 // Java final project
 import javafx.application.Application;

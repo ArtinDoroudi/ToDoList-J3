@@ -26,17 +26,27 @@ public class mainPage extends Application {
         Button Help = new Button("Help");
         Button createTaskButton = new Button("Create New Task");
         CheckBox cb = new CheckBox("Complete");
-        cb.setIndeterminate(false);
+        CheckBox cb2 = new CheckBox("Complete");
         Text text = new Text("clean your room");
+        Text text2 = new Text("finish java");
 
-        Image updateicon = new Image(getClass().getResource("/images/update3.jpg").toExternalForm());
+        Image updateicon = new Image(getClass().getResource("/images/update4.png").toExternalForm());
         ImageView updateview = new ImageView(updateicon);
-        Image trashcan = new Image(getClass().getResource("/images/trashcan.jpg").toExternalForm());
+        Image trashcan = new Image(getClass().getResource("/images/bin.png").toExternalForm());
         ImageView trash = new ImageView(trashcan);
-        updateview.setFitWidth(50);
-        updateview.setFitHeight(20);
-        trash.setFitWidth(25);
-        trash.setFitHeight(35);
+        updateview.setFitWidth(30);
+        updateview.setFitHeight(30);
+        trash.setFitWidth(30);
+        trash.setFitHeight(30);
+
+        Image updateicon2 = new Image(getClass().getResource("/images/update4.png").toExternalForm());
+        ImageView updateview2 = new ImageView(updateicon2);
+        Image trashcan2 = new Image(getClass().getResource("/images/bin.png").toExternalForm());
+        ImageView trash2 = new ImageView(trashcan2);
+        updateview2.setFitWidth(30);
+        updateview2.setFitHeight(30);
+        trash2.setFitWidth(30);
+        trash2.setFitHeight(30);
 
 
         Button update = new Button();
@@ -44,11 +54,17 @@ public class mainPage extends Application {
         update.setGraphic(updateview);
         delete.setGraphic(trash);
 
+        Button update2 = new Button();
+        Button delete2 = new Button();
+        update2.setGraphic(updateview2);
+        delete2.setGraphic(trash2);
+
         //all styles for the nodes
         Dashboard.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 23; -fx-font-weight: bold;");
         About.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 23; -fx-font-weight: bold;");
         Help.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 23; -fx-font-weight: bold;");
         text.setStyle(" -fx-font-size: 17; -fx-font-weight: bold;");
+        text2.setStyle(" -fx-font-size: 17; -fx-font-weight: bold;");
 
         Dashboard.setOnMouseEntered(e -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Dashboard);
@@ -100,9 +116,17 @@ public class mainPage extends Application {
         taskRow.setMaxWidth(500);
         taskRow.setMinHeight(50);
 
+        HBox taskRow2 = new HBox();
+        taskRow2.setAlignment(Pos.CENTER);
+        taskRow2.getChildren().addAll(cb2, text2, update2, delete2);
+        taskRow2.setStyle("-fx-background-color: LIGHTGREY; -fx-background-radius: 10;");
+        taskRow2.setSpacing(20);
+        taskRow2.setMaxWidth(500);
+        taskRow2.setMinHeight(50);
+
 
         VBox vbox = new VBox();
-        vbox.getChildren().addAll(taskRow, createTaskButton );
+        vbox.getChildren().addAll(taskRow, taskRow2, createTaskButton );
         vbox.setAlignment(Pos.CENTER);
         vbox.setSpacing(10);
 

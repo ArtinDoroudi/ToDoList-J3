@@ -1,4 +1,4 @@
-package org.example.projectj3;
+package org.example.projectj3.GUI;
 
 import javafx.animation.ScaleTransition;
 import javafx.application.Application;

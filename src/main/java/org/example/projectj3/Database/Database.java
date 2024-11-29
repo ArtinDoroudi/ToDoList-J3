@@ -14,13 +14,17 @@ public class Database {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 connection = DriverManager
-                        .getConnection("jdbc:mysql://localhost:3306/" + DB_NAME
+                        .getConnection("jdbc:mysql://localhost:3307/" + DB_NAME
                                         // + "?useSSL=false",
                                         + "?serverTimezone=UTC",
                                 DB_USER,
                                 DB_PASSWORD);
                 System.out.println("Connected to database!");
-                createTable(TABLE_LOCATION, CREATE_TABLE_LOCATION, connection);
+                createTable("users", CREATE_TABLE_USER, connection);
+                createTable("tasks", CREATE_TABLE_TASK, connection);
+                createTable("tags", CREATE_TABLE_TAG, connection);
+                createTable("user_tasks", CREATE_TABLE_USER_TASK, connection);
+                createTable("task_tags", CREATE_TABLE_TASK_TAG, connection);
             } catch (Exception e) {
                 e.printStackTrace();
             }

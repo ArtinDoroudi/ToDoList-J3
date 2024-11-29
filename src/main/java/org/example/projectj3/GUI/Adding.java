@@ -1,5 +1,6 @@
 package org.example.projectj3.GUI;
 
+import javafx.animation.ScaleTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -13,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.example.projectj3.Database.DBConst;
 import org.example.projectj3.Database.Database;
 
@@ -36,6 +38,43 @@ public class Adding extends Application {
         Button Submit = new Button("Submit"); // add new submit button
         ComboBox<String> Tags = new ComboBox<>();
         Tags.getItems().addAll("Important", "Gym", "School", "Family");
+
+        Dashboard.setOnMouseEntered(e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Dashboard);
+            scaleTransition.setToX(1.1);
+            scaleTransition.setToY(1.1);
+            scaleTransition.play();
+        });
+        Dashboard.setOnMouseExited(e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Dashboard);
+            scaleTransition.setToX(1.0);
+            scaleTransition.setToY(1.0);
+            scaleTransition.play();
+        });
+        About.setOnMouseEntered(e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), About);
+            scaleTransition.setToX(1.1);
+            scaleTransition.setToY(1.1);
+            scaleTransition.play();
+        });
+        About.setOnMouseExited(e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), About);
+            scaleTransition.setToX(1.0);
+            scaleTransition.setToY(1.0);
+            scaleTransition.play();
+        });
+        Help.setOnMouseEntered(e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Help);
+            scaleTransition.setToX(1.1);
+            scaleTransition.setToY(1.1);
+            scaleTransition.play();
+        });
+        Help.setOnMouseExited(e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Help);
+            scaleTransition.setToX(1.0);
+            scaleTransition.setToY(1.0);
+            scaleTransition.play();
+        });
 
         // Event Handlers for the Buttons
         Dashboard.setOnAction(event -> {

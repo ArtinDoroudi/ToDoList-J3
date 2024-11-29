@@ -20,6 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.example.projectj3.entity.Tag;
 
 import javax.swing.text.html.HTML;
 import java.util.ArrayList;
@@ -31,15 +32,15 @@ public class DataVisualization extends Application {
         chart = new PieChart();
         chart.setTitle("All Tags Used");
         chart.setLabelsVisible(true);
-       // generateChart();
+        generateChart();
     }
     public static DataVisualization getInstance(){
         if(application == null){
             application = new DataVisualization();
         }
         return application;
-    }*/
-   /*    public PieChart generateChart() {
+    }
+      public PieChart generateChart() {
            TagTable table = new TagTable();
            ArrayList<Tag> tags = table.getAllTags();
            chart.getData().clear();

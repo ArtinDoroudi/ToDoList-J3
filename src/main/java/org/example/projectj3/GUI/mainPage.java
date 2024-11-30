@@ -15,11 +15,26 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.example.projectj3.Database.Database;
+import org.example.projectj3.entity.Task;
+
+import java.sql.Connection;
+import java.util.List;
 
 public class mainPage extends Application {
+    private VBox taskContainer;
 
     @Override
     public void start(Stage primaryStage) {
+        // Example of loading tasks after the main page starts
+        Database database = Database.getInstance();
+        Connection connection = database.getConnection();
+        int userId = 1;  // Example: assume you're using a fixed userId
+        List<Task> tasks = Task.getTasksByUserId(userId, connection);
+        for (Task task : tasks) {
+            addNewTask(task.getTitle()); // Call to add the task to the UI dynamically
+        }
+
         //creating all the nodes
         Button Dashboard = new Button("Dashboard");
         Button About = new Button("About");
@@ -58,6 +73,23 @@ public class mainPage extends Application {
         Button delete2 = new Button();
         update2.setGraphic(updateview2);
         delete2.setGraphic(trash2);
+
+        taskContainer = new VBox(); // Container for tasks
+        taskContainer.setAlignment(Pos.CENTER);
+        taskContainer.setSpacing(10);
+
+        createTaskButton.setOnAction(event -> {
+            try {
+                Adding addingPage = new Adding(); // No parameters passed
+                Stage stage = (Stage) createTaskButton.getScene().getWindow();
+                addingPage.start(stage);
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Error loading the Adding page.");
+            }
+        });
+
+
 
         //all styles for the nodes
         Dashboard.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 23; -fx-font-weight: bold;");
@@ -126,7 +158,7 @@ public class mainPage extends Application {
 
 
         VBox vbox = new VBox();
-        vbox.getChildren().addAll(taskRow, taskRow2, createTaskButton );
+        vbox.getChildren().addAll(taskRow, taskRow2, createTaskButton, taskContainer );
         vbox.setAlignment(Pos.CENTER);
         vbox.setSpacing(10);
 
@@ -141,9 +173,50 @@ public class mainPage extends Application {
         primaryStage.setTitle("Main Page");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+
+
     }
+    public void addNewTask(String task_title) {
+        CheckBox checkBox = new CheckBox("Complete");
+        Button updateButton = new Button();
+        Button deleteButton = new Button();
+
+        Image updateIcon = new Image(getClass().getResource("/images/update4.png").toExternalForm());
+        ImageView updateView = new ImageView(updateIcon);
+        Image trashCan = new Image(getClass().getResource("/images/bin.png").toExternalForm());
+        ImageView trash = new ImageView(trashCan);
+
+        updateView.setFitWidth(30);
+        updateView.setFitHeight(30);
+        trash.setFitWidth(30);
+        trash.setFitHeight(30);
+
+        updateButton.setGraphic(updateView);
+        deleteButton.setGraphic(trash);
+
+        // Add the task row to the main page
+        addTaskRow(task_title, checkBox, updateButton, deleteButton, "LIGHTBLUE");
+    }
+
+
+
+
+    // Method to dynamically add a task row
+    public void addTaskRow(String task_title, CheckBox checkBox, Button updateButton, Button deleteButton, String color) {
+        HBox taskRow = new HBox();
+        taskRow.setStyle("-fx-background-color: " + color + "; -fx-padding: 10;");
+        taskRow.setSpacing(10);
+
+        taskRow.getChildren().addAll(new Label(task_title), checkBox, updateButton, deleteButton);
+
+        taskContainer.getChildren().add(taskRow);
+    }
+
 
     public static void main(String[] args) {
         launch(args);
     }
 }
+
+

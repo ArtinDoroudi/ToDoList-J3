@@ -2,7 +2,6 @@ package org.example.projectj3.GUI;
 
 import javafx.animation.ScaleTransition;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,20 +9,20 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.projectj3.Database.DBConst;
 import org.example.projectj3.Database.Database;
 
-import java.io.IOException;
 import java.sql.*;
 
 import static javafx.application.Application.launch;
 
 public class Adding extends Application {
+    public Adding() {
+    }
+
     public void start(Stage stage){
         Text Task = new Text("Task");
         Text Description = new Text("Description");
@@ -86,6 +85,7 @@ public class Adding extends Application {
         Help.setOnAction(event -> {
             System.out.println("Help button clicked!");
         });
+
         Submit.setOnAction(event -> {
             // Collect data from form fields
             String taskName = TaskName.getText().trim();
@@ -119,6 +119,19 @@ public class Adding extends Application {
                 System.out.println("An error occurred while adding the task.");
             }
         });
+        Dashboard.setOnAction(event -> {
+            try {
+                Stage currentStage = (Stage) Dashboard.getScene().getWindow(); // Get the current stage
+                new mainPage().start(currentStage); // Load the main page
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Error reloading the Dashboard page.");
+            }
+        });
+
+
+
+
 
 
 

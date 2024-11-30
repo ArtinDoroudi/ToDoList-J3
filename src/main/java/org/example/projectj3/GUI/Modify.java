@@ -1,7 +1,9 @@
-package org.example.projectj3;
+package org.example.projectj3.GUI;
 
+import javafx.animation.ScaleTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,8 +15,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
-import java.io.IOException;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 
 import static javafx.application.Application.launch;
 
@@ -33,6 +37,12 @@ public class Modify extends Application {
         Button Submit = new Button("Submit");
         ComboBox Tags = new ComboBox();
 
+        Image image = new Image(getClass().getResource("/images/update.jpg").toExternalForm());
+        ImageView imageView = new ImageView(image);
+
+        imageView.setFitWidth(200);
+        imageView.setFitHeight(80);
+
         UpdateTask.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
 
         UpdateDescription.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
@@ -44,27 +54,74 @@ public class Modify extends Application {
 
         UpdateTaskName.setMaxSize(500, 50);
         UpdateTaskDescription.setMaxSize(500, 150);
+        Dashboard.setOnMouseEntered(e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Dashboard);
+            scaleTransition.setToX(1.1);
+            scaleTransition.setToY(1.1);
+            scaleTransition.play();
+        });
+        Dashboard.setOnMouseExited(e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Dashboard);
+            scaleTransition.setToX(1.0);
+            scaleTransition.setToY(1.0);
+            scaleTransition.play();
+        });
+        About.setOnMouseEntered(e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), About);
+            scaleTransition.setToX(1.1);
+            scaleTransition.setToY(1.1);
+            scaleTransition.play();
+        });
+        About.setOnMouseExited(e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), About);
+            scaleTransition.setToX(1.0);
+            scaleTransition.setToY(1.0);
+            scaleTransition.play();
+        });
+        Help.setOnMouseEntered(e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Help);
+            scaleTransition.setToX(1.1);
+            scaleTransition.setToY(1.1);
+            scaleTransition.play();
+        });
+        Help.setOnMouseExited(e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Help);
+            scaleTransition.setToX(1.0);
+            scaleTransition.setToY(1.0);
+            scaleTransition.play();
+        });
 
 
 
         Dashboard.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 20; -fx-font-weight: bold;");
         About.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 20; -fx-font-weight: bold;");
         Help.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 20; -fx-font-weight: bold;");
+
         HBox hbox = new HBox();
         hbox.getChildren().addAll(Dashboard,About,Help);
+
+        HBox imagepane = new HBox();
+        imagepane.getChildren().add(imageView);
+       // imagepane.setPadding(new Insets(10));
+
+
 
         Tags.getItems().addAll("Important", "Gym", "School", "Family");
 
         VBox vbox = new VBox();
         vbox.getChildren().addAll(UpdateTask,UpdateTaskName,UpdateDescription,UpdateTaskDescription,Date, dueDate, tag, Tags, Submit);
         vbox.setAlignment(Pos.CENTER);
-        vbox.setSpacing(5);
+        vbox.setSpacing(3);
 
         Submit.setStyle("-fx-background-color: #8cfa8c; -fx-font-size: 15; -fx-font-weight: bold; ");
 
+        BorderPane Top = new BorderPane();
+        Top.setRight(imagepane);
+        Top.setLeft(hbox);
+
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(vbox);
-        borderPane.setTop(hbox);
+        borderPane.setTop(Top);
         borderPane.setStyle("-fx-background-color: TAN");
 
 

@@ -26,20 +26,19 @@ import javax.swing.text.html.HTML;
 import java.util.ArrayList;
 
 public class DataVisualization extends Application {
-    /*private static DataVisualization application;
-    private final PieChart chart;
-    private DataVisualization(){
+    //private static DataVisualization application;
+    //private final PieChart chart;
+    /*private DataVisualization(){
         chart = new PieChart();
         chart.setTitle("All Tags Used");
         chart.setLabelsVisible(true);
         generateChart();
+        Button refresh  =new Button("Refresh");
+        refresh.setOnAction(e->{
+            generateChart();
+        });
     }
-    public static DataVisualization getInstance(){
-        if(application == null){
-            application = new DataVisualization();
-        }
-        return application;
-    }
+
       public PieChart generateChart() {
            TagTable table = new TagTable();
            ArrayList<Tag> tags = table.getAllTags();
@@ -52,8 +51,13 @@ public class DataVisualization extends Application {
                        FXCollections.observableArrayList();
                chart.setData(data);
                return chart;
-           }*/
-
+           }
+    public static DataVisualization getInstance(){
+        if(application == null){
+            application = new DataVisualization();
+        }
+        return application;
+    }*/
     public void start(Stage stage){
         Button Dashboard = new Button("Dashboard");
         Button About = new Button("About");

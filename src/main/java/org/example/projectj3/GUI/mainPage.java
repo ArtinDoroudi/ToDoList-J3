@@ -63,8 +63,8 @@ public class mainPage extends Application {
         Dashboard.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 23; -fx-font-weight: bold;");
         About.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 23; -fx-font-weight: bold;");
         Help.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 23; -fx-font-weight: bold;");
-        text.setStyle(" -fx-font-size: 17; -fx-font-weight: bold;");
-        text2.setStyle(" -fx-font-size: 17; -fx-font-weight: bold;");
+        text.setStyle(" -fx-font-size: 20; -fx-font-weight: bold;");
+        text2.setStyle(" -fx-font-size: 20; -fx-font-weight: bold;");
 
         Dashboard.setOnMouseEntered(e -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Dashboard);
@@ -112,16 +112,16 @@ public class mainPage extends Application {
         taskRow.setAlignment(Pos.CENTER);
         taskRow.getChildren().addAll(cb, text, update, delete);
         taskRow.setStyle("-fx-background-color: LIGHTBLUE; -fx-background-radius: 10;");
-        taskRow.setSpacing(20);
-        taskRow.setMaxWidth(500);
+        taskRow.setSpacing(30);
+        taskRow.setMaxWidth(700);
         taskRow.setMinHeight(50);
 
         HBox taskRow2 = new HBox();
         taskRow2.setAlignment(Pos.CENTER);
         taskRow2.getChildren().addAll(cb2, text2, update2, delete2);
         taskRow2.setStyle("-fx-background-color: LIGHTGREY; -fx-background-radius: 10;");
-        taskRow2.setSpacing(20);
-        taskRow2.setMaxWidth(500);
+        taskRow2.setSpacing(30);
+        taskRow2.setMaxWidth(700);
         taskRow2.setMinHeight(50);
 
 

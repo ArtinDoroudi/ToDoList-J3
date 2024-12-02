@@ -19,11 +19,24 @@ import javafx.util.Duration;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
+import org.example.projectj3.Database.Database;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 
 import static javafx.application.Application.launch;
 
 public class Modify extends Application {
-    public void start(Stage stage){
+    private int taskId;
+
+    public Modify(int taskId) {
+        this.taskId = taskId;
+    }
+
+
+    public void start(Stage stage) {
         Text UpdateTask = new Text("Update Task");
         Text UpdateDescription = new Text("Update Description");
         Text Date = new Text("Date");
@@ -35,13 +48,8 @@ public class Modify extends Application {
         Button About = new Button("About");
         Button Help = new Button("Help");
         Button Submit = new Button("Submit");
-        ComboBox Tags = new ComboBox();
+        ComboBox<String> Tags = new ComboBox<>();
 
-        Image image = new Image(getClass().getResource("/images/update.jpg").toExternalForm());
-        ImageView imageView = new ImageView(image);
-
-        imageView.setFitWidth(200);
-        imageView.setFitHeight(80);
 
         UpdateTask.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
 
@@ -92,46 +100,76 @@ public class Modify extends Application {
         });
 
 
-
         Dashboard.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 20; -fx-font-weight: bold;");
         About.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 20; -fx-font-weight: bold;");
         Help.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 20; -fx-font-weight: bold;");
 
         HBox hbox = new HBox();
-        hbox.getChildren().addAll(Dashboard,About,Help);
-
-        HBox imagepane = new HBox();
-        imagepane.getChildren().add(imageView);
-       // imagepane.setPadding(new Insets(10));
-
+        hbox.getChildren().addAll(Dashboard, About, Help);
 
 
         Tags.getItems().addAll("Important", "Gym", "School", "Family");
 
         VBox vbox = new VBox();
-        vbox.getChildren().addAll(UpdateTask,UpdateTaskName,UpdateDescription,UpdateTaskDescription,Date, dueDate, tag, Tags, Submit);
+        vbox.getChildren().addAll(UpdateTask, UpdateTaskName, UpdateDescription, UpdateTaskDescription, Date, dueDate, tag, Tags, Submit);
         vbox.setAlignment(Pos.CENTER);
         vbox.setSpacing(3);
 
         Submit.setStyle("-fx-background-color: #8cfa8c; -fx-font-size: 15; -fx-font-weight: bold; ");
 
-        BorderPane Top = new BorderPane();
-        Top.setRight(imagepane);
-        Top.setLeft(hbox);
 
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(vbox);
-        borderPane.setTop(Top);
+        borderPane.setTop(hbox);
         borderPane.setStyle("-fx-background-color: TAN");
 
 
+        Submit.setOnAction(event -> {
+            String updatedTaskName = UpdateTaskName.getText().trim();
+            String updatedDescription = UpdateTaskDescription.getText().trim();
+            String updatedDueDate = dueDate.getValue() != null ? dueDate.getValue().toString() : null;
+            String updatedTag = Tags.getValue();
+
+            if (!updatedTaskName.isEmpty() && !updatedDescription.isEmpty()) {
+                if (updateTaskInDatabase(taskId, updatedTaskName, updatedDescription, updatedDueDate, updatedTag)) {
+                    System.out.println("Task updated successfully!");
+                    stage.close();
+                } else {
+                    System.out.println("Failed to update the task.");
+                }
+            } else {
+                System.out.println("Task name and description cannot be empty!");
+            }
+        });
+
 
         Scene scene = new Scene(borderPane, 1000, 500);
-
         stage.setTitle("Update Task");
         stage.setScene(scene);
         stage.show();
+
+
     }
+
+
+    public boolean updateTaskInDatabase(int taskId, String title, String description, String dueDate, String tag) {
+        String updateQuery = "UPDATE tasks SET title = ?, WHERE id = ?";
+        try (Connection connection = Database.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+
+            preparedStatement.setString(1, title);
+            preparedStatement.setString(2, description);
+            preparedStatement.setInt(5, taskId);
+
+            int rowsUpdated = preparedStatement.executeUpdate();
+            return rowsUpdated > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     public static void main(String[] args) {
         launch();

@@ -8,22 +8,28 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.example.projectj3.Database.Database;
+import org.example.projectj3.pojo.User;
+import org.example.projectj3.tables.UserTable;
+
+import java.sql.Connection;
 
 public class register extends Application {
 
+    private Stage primaryStage;
+
     @Override
     public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
         primaryStage.setTitle("Register Page");
 
-        // Create grid layout
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(10);
         grid.setHgap(10);
-        grid.setAlignment(Pos.CENTER); // Center alignment
-        grid.setStyle("-fx-background-color: tan;");  // Tan background
+        grid.setAlignment(Pos.CENTER);
+        grid.setStyle("-fx-background-color: tan;");
 
-        // Label and field for username
         Label usernameLabel = new Label("Username:");
         usernameLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: black; -fx-font-size: 14px;");
         grid.add(usernameLabel, 0, 0);
@@ -31,51 +37,90 @@ public class register extends Application {
         TextField usernameField = new TextField();
         grid.add(usernameField, 1, 0);
 
-        // Password label and field
+        Label emailLabel = new Label("Email:");
+        emailLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: black; -fx-font-size: 14px;");
+        grid.add(emailLabel, 0, 1);
+
+        TextField emailField = new TextField();
+        grid.add(emailField, 1, 1);
+
         Label passwordLabel = new Label("Password:");
         passwordLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: black; -fx-font-size: 14px;");
-        grid.add(passwordLabel, 0, 1);
+        grid.add(passwordLabel, 0, 2);
 
         PasswordField passwordField = new PasswordField();
-        grid.add(passwordField, 1, 1);
+        grid.add(passwordField, 1, 2);
 
-        // Confirm Password label and field
         Label confirmPasswordLabel = new Label("Confirm Password:");
         confirmPasswordLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: black; -fx-font-size: 14px;");
-        grid.add(confirmPasswordLabel, 0, 2);
+        grid.add(confirmPasswordLabel, 0, 3);
 
         PasswordField confirmPasswordField = new PasswordField();
-        grid.add(confirmPasswordField, 1, 2);
+        grid.add(confirmPasswordField, 1, 3);
 
-        // Register button
         Button registerButton = new Button("Register");
         registerButton.setStyle("-fx-background-color: #8cfa8c; -fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: black;");
-        grid.add(registerButton, 1, 3);
+        grid.add(registerButton, 1, 4);
 
-        // Message label for success/error
         Label message = new Label();
         message.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
-        grid.add(message, 1, 4);
+        grid.add(message, 1, 5);
 
-        // Register button action
         registerButton.setOnAction(event -> {
             String username = usernameField.getText();
+            String email = emailField.getText();
             String password = passwordField.getText();
             String confirmPassword = confirmPasswordField.getText();
 
-            if (password.equals(confirmPassword)) {
-                message.setText("Registration Successful!");
-                message.setTextFill(Color.GREEN); // Green for success
-            } else {
-                message.setText("Passwords do not match. Please try again.");
-                message.setTextFill(Color.RED); // Red for error
+            if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                message.setText("All fields are required.");
+                message.setTextFill(Color.RED);
+                return;
             }
+
+            if (!password.equals(confirmPassword)) {
+                message.setText("Passwords do not match. Please try again.");
+                message.setTextFill(Color.RED);
+                return;
+            }
+
+            Connection connection = Database.getInstance().getConnection();
+            if (connection == null) {
+                message.setText("Database connection failed.");
+                message.setTextFill(Color.RED);
+                return;
+            }
+
+            UserTable userTable = new UserTable(connection);
+            User user = new User(username, email, password, false);
+            boolean result = userTable.createUser(user);
+
+            if (result) {
+                message.setText("Registration Successful!");
+                message.setTextFill(Color.GREEN);
+
+                // Navigate to main page
+                switchToMainPage();
+            } else {
+                message.setText("Failed to register user. Email might already exist.");
+                message.setTextFill(Color.RED);
+            }
+
+            Database.getInstance().closeConnection();
         });
 
-        // Create and set scene
-        Scene scene = new Scene(grid, 300, 250);
+        Scene scene = new Scene(grid, 400, 300);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private void switchToMainPage() {
+        mainPage mainPageInstance = new mainPage();
+        try {
+            mainPageInstance.start(primaryStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

@@ -63,7 +63,7 @@ public class UserTableTest {
 
     private static void testDeleteUser(UserTable userTable) {
         System.out.println("\nRunning testDeleteUser...");
-        boolean result = userTable.deleteUser(1); // Assuming user ID 1 exists in your database
+        boolean result = userTable.deleteUser(1); // Assuming user ID 1 exists in database
         System.out.println("User deleted: " + result);
     }
 }

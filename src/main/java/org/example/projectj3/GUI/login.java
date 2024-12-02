@@ -1,6 +1,5 @@
 package org.example.projectj3.GUI;
 
-// Java final project
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,23 +10,25 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.example.projectj3.Database.Database;
+import org.example.projectj3.tables.UserTable;
+
+import java.sql.Connection;
 
 public class login extends Application {
 
+    private Stage primaryStage;
+
     @Override
     public void start(Stage primaryStage) {
-        // Setting up gridpane
+        this.primaryStage = primaryStage;
         GridPane grid = new GridPane();
-        // Positioning it to center
         grid.setAlignment(Pos.CENTER);
-        // Spacing horizontal and vertical between rows and columns
         grid.setHgap(10);
         grid.setVgap(10);
 
-        // Set a tan background for the grid
-        grid.setStyle("-fx-background-color: tan;");  // Tan background
+        grid.setStyle("-fx-background-color: tan;");
 
-        // Creating elements
         Label userName = new Label("Username:");
         userName.setStyle("-fx-font-weight: bold; -fx-text-fill: black; -fx-font-size: 14px;");
         grid.add(userName, 0, 1);
@@ -51,25 +52,54 @@ public class login extends Application {
         grid.add(message, 1, 4);
         message.setTextFill(Color.RED);
 
-        // Button action for login
         loginButton.setOnAction(e -> {
             String username = usernameEntered.getText();
             String password = passwordTextfield.getText();
 
             if (username.isEmpty() || password.isEmpty()) {
                 message.setText("Please enter both username and password.");
-                message.setTextFill(Color.RED);  // Red text for error
-            } else {
-                message.setText("Login successful!");
-                message.setTextFill(Color.GREEN);  // Green text for success
+                message.setTextFill(Color.RED);
+                return;
             }
+
+            Connection connection = Database.getInstance().getConnection();
+            if (connection == null) {
+                message.setText("Database connection failed.");
+                message.setTextFill(Color.RED);
+                return;
+            }
+
+            UserTable userTable = new UserTable(connection);
+            boolean isAuthenticated = userTable.authenticateUser(username, password);
+
+            if (isAuthenticated) {
+                message.setText("Login successful!");
+                message.setTextFill(Color.GREEN);
+
+                // Navigate to the main page
+                switchToMainPage(username);
+            } else {
+                message.setText("Invalid username or password.");
+                message.setTextFill(Color.RED);
+            }
+
+            Database.getInstance().closeConnection();
         });
 
-        // Set up the scene and stage
         Scene scene = new Scene(grid, 300, 200);
         primaryStage.setTitle("Login Page");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private void switchToMainPage(String username) {
+        mainPage mainPageInstance = new mainPage();
+        mainPageInstance.setLoggedInUser(username);
+        try {
+            mainPageInstance.start(primaryStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

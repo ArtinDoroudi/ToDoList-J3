@@ -118,10 +118,18 @@ public class UserTable implements UserDAO {
             statement.setString(1, userName);
             statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
-            return resultSet.next();
+
+            // Debugging output
+            if (resultSet.next()) {
+                System.out.println("User authenticated: " + userName);
+                return true;
+            } else {
+                System.out.println("Authentication failed for: " + userName);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
+
 }

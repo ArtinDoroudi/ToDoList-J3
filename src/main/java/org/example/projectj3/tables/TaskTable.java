@@ -84,33 +84,31 @@ public class TaskTable implements TaskDAO {
 
     @Override
     public boolean createTask(Task task, int userId) {
-        String query = "INSERT INTO task_table (Task_Title, Task_Description, is_Completed, is_Pinned) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO task_table (Task_Title, Task_Description, Task_Due_Date, is_Completed, is_Pinned, deleted) " +
+                "VALUES (?, ?, ?, false, false, false)";
         try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, task.getTitle());
             statement.setString(2, task.getDescription());
-            statement.setBoolean(3, task.isCompleted());
-            statement.setBoolean(4, task.isPinned());
+            statement.setString(3, task.getDueDate());
             int rowsInserted = statement.executeUpdate();
+
             if (rowsInserted > 0) {
                 ResultSet keys = statement.getGeneratedKeys();
                 if (keys.next()) {
-                    int taskId = keys.getInt(1);
+                    int generatedTaskId = keys.getInt(1); // Get the generated Task ID
+                    task.setTaskId(generatedTaskId); // Set Task ID in the Task object
+                    System.out.println("Task created with ID: " + generatedTaskId);
 
-                    // Link task to user
-                    String linkQuery = "INSERT INTO user_task_table (User_ID, Task_ID) VALUES (?, ?)";
-                    try (PreparedStatement linkStatement = connection.prepareStatement(linkQuery)) {
-                        linkStatement.setInt(1, userId);
-                        linkStatement.setInt(2, taskId);
-                        linkStatement.executeUpdate();
-                    }
+                    // Now link the task to the user
+                    return assignTaskToUser(userId, generatedTaskId);
                 }
-                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
+
 
     @Override
     public boolean updateTask(Task task) {

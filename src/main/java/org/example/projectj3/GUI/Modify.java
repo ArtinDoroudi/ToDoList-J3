@@ -123,25 +123,7 @@ public class Modify extends Application {
         borderPane.setTop(hbox);
         borderPane.setStyle("-fx-background-color: TAN");
 
-
-        Submit.setOnAction(event -> {
-            String updatedTaskName = UpdateTaskName.getText().trim();
-            String updatedDescription = UpdateTaskDescription.getText().trim();
-            String updatedDueDate = dueDate.getValue() != null ? dueDate.getValue().toString() : null;
-            String updatedTag = Tags.getValue();
-
-            if (!updatedTaskName.isEmpty() && !updatedDescription.isEmpty()) {
-                if (updateTaskInDatabase(taskId, updatedTaskName, updatedDescription, updatedDueDate, updatedTag)) {
-                    System.out.println("Task updated successfully!");
-                    stage.close();
-                } else {
-                    System.out.println("Failed to update the task.");
-                }
-            } else {
-                System.out.println("Task name and description cannot be empty!");
-            }
-        });
-
+        
 
         Scene scene = new Scene(borderPane, 1000, 500);
         stage.setTitle("Update Task");
@@ -152,23 +134,7 @@ public class Modify extends Application {
     }
 
 
-    public boolean updateTaskInDatabase(int taskId, String title, String description, String dueDate, String tag) {
-        String updateQuery = "UPDATE tasks SET title = ?, WHERE id = ?";
-        try (Connection connection = Database.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
-            preparedStatement.setString(1, title);
-            preparedStatement.setString(2, description);
-            preparedStatement.setInt(5, taskId);
-
-            int rowsUpdated = preparedStatement.executeUpdate();
-            return rowsUpdated > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
 
     public static void main(String[] args) {

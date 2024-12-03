@@ -14,6 +14,7 @@ import org.example.projectj3.Database.Database;
 import org.example.projectj3.tables.UserTable;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public class login extends Application {
 
@@ -62,7 +63,12 @@ public class login extends Application {
                 return;
             }
 
-            Connection connection = Database.getInstance().getConnection();
+            Connection connection = null;
+            try {
+                connection = Database.getInstance().getConnection();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             if (connection == null) {
                 message.setText("Database connection failed.");
                 message.setTextFill(Color.RED);

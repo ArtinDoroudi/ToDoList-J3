@@ -1,16 +1,23 @@
 package org.example.projectj3;
 
 import org.example.projectj3.Database.Database;
+
+import java.sql.SQLException;
+
 public class db_test {
     public static void main(String[] args) {
         Database db = Database.getInstance();
         // Verify the connection
-        if (db.getConnection() != null) {
-            System.out.println("Connection to the database is successful!");
-            // Close the connection after testing
-            db.closeConnection();
-        } else {
-            System.out.println("Failed to connect to the database.");
+        try {
+            if (db.getConnection() != null) {
+                System.out.println("Connection to the database is successful!");
+                // Close the connection after testing
+                db.closeConnection();
+            } else {
+                System.out.println("Failed to connect to the database.");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

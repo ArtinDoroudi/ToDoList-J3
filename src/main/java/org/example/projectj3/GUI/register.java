@@ -13,6 +13,7 @@ import org.example.projectj3.pojo.User;
 import org.example.projectj3.tables.UserTable;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public class register extends Application {
 
@@ -84,7 +85,12 @@ public class register extends Application {
                 return;
             }
 
-            Connection connection = Database.getInstance().getConnection();
+            Connection connection = null;
+            try {
+                connection = Database.getInstance().getConnection();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
             if (connection == null) {
                 message.setText("Database connection failed.");
                 message.setTextFill(Color.RED);

@@ -5,12 +5,18 @@ import org.example.projectj3.pojo.User;
 import org.example.projectj3.tables.UserTable;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public class UserTableTest {
 
     public static void main(String[] args) {
-        Connection connection = Database.getInstance().getConnection();
+        Connection connection = null;
+        try {
+            connection = Database.getInstance().getConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         if (connection == null) {
             System.out.println("Failed to establish a database connection.");
             return;

@@ -1,7 +1,9 @@
 package org.example.projectj3.tables;
 
 import org.example.projectj3.DAO.TagDAO;
+import org.example.projectj3.Database.DBConst;
 import org.example.projectj3.pojo.Tag;
+
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -95,17 +97,46 @@ public class TagTable implements TagDAO {
     }
 
     @Override
-    public boolean linkTagToTask(int tagId, int taskId) {
-        String query = "INSERT INTO task_tag_table (Tag_ID, Task_ID) VALUES (?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, tagId);
-            statement.setInt(2, taskId);
-            return statement.executeUpdate() > 0;
+    public boolean linkTagToTask(int taskId, int tagId) {
+        String insertTaskTagSql = "INSERT INTO " + DBConst.TABLE_TASK_TAG + " (" +
+                DBConst.TASK_TAG_COLUMN_TASK_ID + ", " +
+                DBConst.TASK_TAG_COLUMN_TAG_ID + ") VALUES (?, ?)";
+
+        try (PreparedStatement insertTaskTagStmt = connection.prepareStatement(insertTaskTagSql)) {
+            insertTaskTagStmt.setInt(1, taskId);
+            insertTaskTagStmt.setInt(2, tagId);
+            int rowsInserted = insertTaskTagStmt.executeUpdate();
+            System.out.println("Rows inserted into task_tag_table: " + rowsInserted); // Debugging
+            return rowsInserted > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("Error linking task to tag. Task ID: " + taskId + ", Tag ID: " + tagId); // Debugging
         }
         return false;
     }
+
+
+
+
+    public List<String> getAllTagTitles() {
+        List<String> tagTitles = new ArrayList<>();
+        String query = "SELECT " + DBConst.TAG_COLUMN_TITLE + " FROM " + DBConst.TABLE_TAG;
+        System.out.println("Fetching tags from the database...");
+        System.out.println("Query: SELECT Tag_Title FROM tags_table");
+
+        try (PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                tagTitles.add(resultSet.getString(DBConst.TAG_COLUMN_TITLE));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tagTitles;
+    }
+
+
 
     @Override
     public List<Tag> getTagsByTaskId(int taskId) {
@@ -127,20 +158,25 @@ public class TagTable implements TagDAO {
         }
         return tags;
     }
-    public int getTagCount(int tag) {
-        String query = "SELECT COUNT(*) AS TagCount " +
-                "FROM task_tag_table tt " +
-                "JOIN task_table t ON tt.Task_ID = t.Task_ID " +
-                "WHERE t.User_ID = ? AND tt.Tag_ID = ?";
+
+    public int getTagIdByTitle(String tagTitle) {
+        String query = "SELECT " + DBConst.TAG_COLUMN_ID + " FROM " + DBConst.TABLE_TAG +
+                " WHERE " + DBConst.TAG_COLUMN_TITLE + " = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, tag);
+            statement.setString(1, tagTitle);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return resultSet.getInt("TagCount");
+                int tagId = resultSet.getInt(DBConst.TAG_COLUMN_ID);
+                System.out.println("Tag ID found for title '" + tagTitle + "': " + tagId); // Debugging
+                return tagId;
+            } else {
+                System.out.println("No tag found for title: " + tagTitle); // Debugging
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 0;
+        return -1; // Return -1 if the tag is not found
     }
+
+
 }

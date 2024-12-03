@@ -50,7 +50,7 @@ public class Datavisualization extends Application {
 
         public PieChart generateChart() {
             try {
-                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/your_database", "", "");
+                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/your_database", DB_USER, DB_PASSWORD);
                 TagTable table = new TagTable(connection);
                 List<Tag> tags = table.getAllTags();
                 List<PieChart.Data> pieData = new ArrayList<>();

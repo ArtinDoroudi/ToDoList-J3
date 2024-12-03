@@ -57,7 +57,7 @@ public class TagTableTest {
 
     private static void testUpdateTag(TagTable tagTable) {
         System.out.println("\nRunning testUpdateTag...");
-        Tag tag = new Tag(1, "High Priority"); // this 1 is a valid Tag_ID
+        Tag tag = new Tag("High Priority",1 ); // this 1 is a valid Tag_ID
         boolean result = tagTable.updateTag(tag);
         System.out.println("Tag updated: " + result);
     }

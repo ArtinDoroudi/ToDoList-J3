@@ -171,9 +171,13 @@ public class mainPage extends Application {
                     TaskTable taskTable = new TaskTable(connection);
                     boolean isDeleted = taskTable.deleteTask(task.getTaskId());
                     if (isDeleted) {
-                        System.out.println("Task deleted successfully.");
-                        loadTasksForUser(); // Reload the task list
+                        System.out.println("Task marked as deleted successfully.");
+                        loadTasksForUser(); // Refresh the task list
+                    } else {
+                        System.out.println("Failed to mark task as deleted.");
                     }
+                } else {
+                    System.out.println("Database connection is closed or null!");
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();

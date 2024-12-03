@@ -1,5 +1,6 @@
 package org.example.projectj3.Database;
 
+import java.net.URL;
 import java.sql.*;
 import org.example.projectj3.Database.Const.*;
 
@@ -8,7 +9,7 @@ import static org.example.projectj3.Database.DBConst.*;
 
 public class Database {
     private static Database instance;
-    private Connection connection = null;
+    private static Connection connection = null;
 
     public Database() {
         if(connection == null) {
@@ -39,17 +40,25 @@ public class Database {
         return instance;
     }
 
-    public Connection getConnection() {
+    public static Connection getConnection() throws SQLException {
+        if (connection == null || connection.isClosed()) {
+            // Reconnect logic if connection is closed
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/" + DB_NAME + "?serverTimezone=UTC",
+                    DB_USER,
+                    DB_PASSWORD);
+        }
         return connection;
     }
+
 
     public void closeConnection() {
         System.out.println("Closing connection...");
         try {
-            connection.close();
-            System.out.println("Connection closed.");
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Connection closed.");
+            }
         } catch (SQLException e) {
-            connection = null;
             e.printStackTrace();
         }
     }
@@ -57,7 +66,7 @@ public class Database {
     public void createTable(String tableName, String tableQuery, Connection connection) throws SQLException {
         Statement createTable;
         DatabaseMetaData md = connection.getMetaData();
-        ResultSet resultSet = md.getTables("adoroudimd", null, tableName, null);
+        ResultSet resultSet = md.getTables(DB_NAME, null, tableName, null);
         if (resultSet.next()) {
             System.out.println(tableName + " table already exists");
         } else {
@@ -69,7 +78,9 @@ public class Database {
 
     // Method to add a new task
     public boolean addTask(String taskName, String description, String dueDate) {
-        String sql = "INSERT INTO tasks (task_name, description, due_date) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO " + TABLE_TASK + " (" + TASK_COLUMN_TITLE + ", " +
+                TASK_COLUMN_DESCRIPTION + ", " + TASK_COLUMN_DUE_DATE +
+                ") VALUES (?, ?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, taskName);

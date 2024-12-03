@@ -4,6 +4,7 @@ import org.example.projectj3.Database.Database;
 import org.example.projectj3.entity.Task;
 import org.example.projectj3.entity.User;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class TestUserTasks {
@@ -16,6 +17,8 @@ public class TestUserTasks {
             for (Task task : tasks) {
                 System.out.println("Task: " + task.getTitle() + ", Description: " + task.getDescription());
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         } finally {
             dbInstance.closeConnection();
         }

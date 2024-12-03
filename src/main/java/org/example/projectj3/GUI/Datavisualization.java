@@ -1,6 +1,7 @@
 
 package org.example.projectj3.GUI;
 
+import javafx.animation.ScaleTransition;
 import javafx.application.Application;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -19,6 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.example.projectj3.pojo.Tag;
 import org.example.projectj3.tables.TagTable;
 
@@ -60,9 +62,9 @@ public class Datavisualization extends Application {
                     int count = table.getTagCount(tag.getTagId());
                     data.add(new PieChart.Data(tag.getTitle(), count));
                 }
-                ObservableList<PieChart.Data> chartData
+                ObservableList<PieChart.Data> ChartData
                         = FXCollections.observableArrayList(data);
-                chart.setData(chartData);
+                chart.setData(ChartData);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -85,33 +87,79 @@ public class Datavisualization extends Application {
             hbox.getChildren().addAll(Dashboard,About,Help);
 
 
+            Text UpdateUserLogin = new Text("Update User Login");
+            Text User = new Text("Username");
+            Text Password = new Text("Password");
+            TextArea log = new TextArea("Username");
+            TextArea pass = new TextArea("Password");
+            Button Update = new Button("Update");
 
+            UpdateUserLogin.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
+            User.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
 
+            Password.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
+            log.setMaxSize(250, 25);
+            pass.setMaxSize(250, 25);
 
-            //  ObservableList<PieChart.Data> pieChart =
-            //          FXCollections.observableArrayList(
-            //                 new PieChart.Data("Family", 13),
-            //                  new PieChart.Data("School", 25),
-            //                  new PieChart.Data("Gym", 10),
-            //                  new PieChart.Data("Important", 22));
-            //  final PieChart chart = new PieChart(pieChart);
-            // chart.setLabelLineLength(10);
-            // chart.setLegendSide(Side.LEFT);
-            // chart.setTitle("Tags Used");
+            VBox vbox = new VBox();
+            vbox.getChildren().addAll(UpdateUserLogin, User,log,Password,pass,Update);
+            vbox.setAlignment(Pos.CENTER);
+            vbox.setSpacing(15);
 
-            //"Important", "Gym", "School", "Family"
+            BorderPane login = new BorderPane();
+            login.setRight(vbox);
+
+            HBox center = new HBox();
+            center.getChildren().addAll(vbox, chart);
+            center.setAlignment(Pos.CENTER);
+            center.setSpacing(15);
 
 
             Submit.setStyle("-fx-background-color: #8cfa8c; -fx-font-size: 15; -fx-font-weight: bold; ");
 
             BorderPane borderPane = new BorderPane();
             borderPane.setTop(hbox);
-            borderPane.setCenter(chart);
+            borderPane.setCenter(center);
             borderPane.setStyle("-fx-background-color: TAN");
 
 
-
+            Dashboard.setOnMouseEntered(e -> {
+                ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Dashboard);
+                scaleTransition.setToX(1.1);
+                scaleTransition.setToY(1.1);
+                scaleTransition.play();
+            });
+            Dashboard.setOnMouseExited(e -> {
+                ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Dashboard);
+                scaleTransition.setToX(1.0);
+                scaleTransition.setToY(1.0);
+                scaleTransition.play();
+            });
+            About.setOnMouseEntered(e -> {
+                ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), About);
+                scaleTransition.setToX(1.1);
+                scaleTransition.setToY(1.1);
+                scaleTransition.play();
+            });
+            About.setOnMouseExited(e -> {
+                ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), About);
+                scaleTransition.setToX(1.0);
+                scaleTransition.setToY(1.0);
+                scaleTransition.play();
+            });
+            Help.setOnMouseEntered(e -> {
+                ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Help);
+                scaleTransition.setToX(1.1);
+                scaleTransition.setToY(1.1);
+                scaleTransition.play();
+            });
+            Help.setOnMouseExited(e -> {
+                ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Help);
+                scaleTransition.setToX(1.0);
+                scaleTransition.setToY(1.0);
+                scaleTransition.play();
+            });
 
             Scene scene = new Scene(borderPane, 1000, 500);
 

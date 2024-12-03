@@ -3,19 +3,17 @@ package org.example.projectj3.pojo;
 public class Tag {
     private int tagId;
     private String title;
-    private int count;
 
 
 
     // Constructors
-    public Tag(int tagId, String title, int count) {
+    public Tag(int tagId, String title) {
         this.tagId = tagId;
         this.title = title;
-        this.count = count;
 
     }
 
-    public Tag(String title, int count) {
+    public Tag(String title) {
         this.title = title;
     }
 

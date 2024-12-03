@@ -140,12 +140,19 @@ public class mainPage extends Application {
         Button updateButton = UpdateButton(title, description, taskId); // Corrected
         Button deleteButton = DeleteButton("/images/bin.png", "Delete");
 
-        HBox taskRow = new HBox(cb, taskTitleText, updateButton, deleteButton);
+        HBox updateDelete = new HBox(updateButton, deleteButton);
+        updateDelete.setAlignment(Pos.CENTER_RIGHT);
+
+        HBox checkbox = new HBox(cb);
+        checkbox.setAlignment(Pos.CENTER_LEFT);
+
+        HBox taskRow = new HBox(checkbox, taskTitleText, updateDelete);
         taskRow.setStyle("-fx-background-color: LIGHTBLUE; -fx-background-radius: 10;");
         taskRow.setAlignment(Pos.CENTER);
         taskRow.setSpacing(15);
         taskRow.setMaxWidth(700);
         taskRow.setMinHeight(50);
+
 
         return taskRow;
     }

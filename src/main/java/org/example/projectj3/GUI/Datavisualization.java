@@ -53,16 +53,16 @@ public class Datavisualization extends Application {
                 Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/iwoodleymd", DB_USER, DB_PASSWORD);
                 TagTable table = new TagTable(connection);
                 List<Tag> tags = table.getAllTags();
-                List<PieChart.Data> pieData = new ArrayList<>();
 
                 chart.getData().clear();
-                ArrayList<PieChart.Data> pie = new ArrayList<>();
+                ArrayList<PieChart.Data> data = new ArrayList<>();
                 for (Tag tag : tags) {
                     int count = table.getTagCount(tag.getTagId());
-                    pie.add(new PieChart.Data(tag.getTitle(), count));
+                    data.add(new PieChart.Data(tag.getTitle(), count));
                 }
-                ObservableList<PieChart.Data> data = FXCollections.observableArrayList(pie);
-                chart.setData(data);
+                ObservableList<PieChart.Data> chartData
+                        = FXCollections.observableArrayList(data);
+                chart.setData(chartData);
             } catch (SQLException e) {
                 e.printStackTrace();
             }

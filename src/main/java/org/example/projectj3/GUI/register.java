@@ -112,7 +112,7 @@ public class register extends Application {
             if (result) {
                 message.setText("Registration Successful!");
                 message.setTextFill(Color.GREEN);
-                switchToMainPage();
+                switchToMainPage(username);
             } else {
                 message.setText("Failed to register user. Email might already exist.");
                 message.setTextFill(Color.RED);
@@ -120,14 +120,13 @@ public class register extends Application {
 
             Database.getInstance().closeConnection();
         });
-
         Scene scene = new Scene(grid, 400, 350);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
-    private void switchToMainPage() {
+    private void switchToMainPage(String username) {
         mainPage mainPageInstance = new mainPage();
+        mainPageInstance.setLoggedInUser(username);
         try {
             mainPageInstance.start(primaryStage);
         } catch (Exception e) {

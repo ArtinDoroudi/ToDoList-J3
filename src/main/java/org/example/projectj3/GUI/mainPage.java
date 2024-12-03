@@ -35,7 +35,6 @@ public class mainPage extends Application {
             e.printStackTrace();
         }
     }
-
     @Override
     public void start(Stage primaryStage) {
         Button dashboardButton = createNavigationButton("Dashboard");
@@ -53,7 +52,14 @@ public class mainPage extends Application {
         createTaskButton.setStyle("-fx-background-color: #8cfa8c; -fx-font-weight: bold;");
         createTaskButton.setOnAction(e -> openAddingPage());
 
-        VBox taskSection = new VBox(taskList, createTaskButton);
+        Button updateTaskListButton = new Button("Update Task List");
+        updateTaskListButton.setStyle("-fx-background-color: #f5c242; -fx-font-weight: bold;");
+        updateTaskListButton.setOnAction(e -> {
+            System.out.println("Updating task list...");
+            loadTasksForUser();
+        });
+
+        VBox taskSection = new VBox(taskList, createTaskButton, updateTaskListButton);
         taskSection.setAlignment(Pos.CENTER);
         taskSection.setSpacing(15);
         loadTasksForUser();

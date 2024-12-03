@@ -90,11 +90,13 @@ public class TaskTable implements TaskDAO {
             statement.setString(2, task.getDescription());
             statement.setBoolean(3, task.isCompleted());
             statement.setBoolean(4, task.isPinned());
+
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
                 ResultSet keys = statement.getGeneratedKeys();
                 if (keys.next()) {
                     int taskId = keys.getInt(1);
+                    task.setTaskId(taskId);
 
                     String linkQuery = "INSERT INTO user_task_table (User_ID, Task_ID) VALUES (?, ?)";
                     try (PreparedStatement linkStatement = connection.prepareStatement(linkQuery)) {
@@ -102,8 +104,8 @@ public class TaskTable implements TaskDAO {
                         linkStatement.setInt(2, taskId);
                         linkStatement.executeUpdate();
                     }
+                    return true;
                 }
-                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();

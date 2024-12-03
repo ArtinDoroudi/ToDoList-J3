@@ -26,7 +26,6 @@ public class login extends Application {
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
-
         grid.setStyle("-fx-background-color: tan;");
 
         Label userName = new Label("Username:");
@@ -52,6 +51,20 @@ public class login extends Application {
         grid.add(message, 1, 4);
         message.setTextFill(Color.RED);
 
+        // Back Button
+        Button backButton = new Button("Back");
+        backButton.setStyle("-fx-background-color: #f5c242; -fx-font-weight: bold; -fx-font-size: 14px;");
+        grid.add(backButton, 1, 5);
+
+        backButton.setOnAction(e -> {
+            ChoosePage choosePage = new ChoosePage();
+            try {
+                choosePage.start(primaryStage);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
         loginButton.setOnAction(e -> {
             String username = usernameEntered.getText();
             String password = passwordTextfield.getText();
@@ -62,7 +75,7 @@ public class login extends Application {
                 return;
             }
 
-            Connection connection = Database.getInstance().getConnection();
+            Connection connection = Database.getInstance().getConnection(); // Automatically reconnects if closed
             if (connection == null) {
                 message.setText("Database connection failed.");
                 message.setTextFill(Color.RED);
@@ -75,18 +88,14 @@ public class login extends Application {
             if (isAuthenticated) {
                 message.setText("Login successful!");
                 message.setTextFill(Color.GREEN);
-
-                // Navigate to the main page
                 switchToMainPage(username);
             } else {
                 message.setText("Invalid username or password.");
                 message.setTextFill(Color.RED);
             }
-
-            Database.getInstance().closeConnection();
         });
 
-        Scene scene = new Scene(grid, 300, 200);
+        Scene scene = new Scene(grid, 300, 250);
         primaryStage.setTitle("Login Page");
         primaryStage.setScene(scene);
         primaryStage.show();

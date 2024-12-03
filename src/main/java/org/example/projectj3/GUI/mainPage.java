@@ -6,187 +6,164 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.example.projectj3.Database.DBConst;
 import org.example.projectj3.Database.Database;
+import org.example.projectj3.tables.TaskTable;
+import org.example.projectj3.pojo.Task;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.List;
 
 public class mainPage extends Application {
     private VBox taskList;
+    private String loggedInUser; // Store logged-in username
+    private int loggedInUserId;  // Store logged-in user ID
+
+    public void setLoggedInUser(String username) {
+        this.loggedInUser = username;
+        try (Connection connection = Database.getInstance().getConnection()) {
+            if (connection != null) {
+                this.loggedInUserId = new org.example.projectj3.tables.UserTable(connection).getUserIdByUsername(username);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void start(Stage primaryStage) {
-        // Creating all the nodes
-        Button Dashboard = new Button("Dashboard");
-        Button About = new Button("About");
-        Button Help = new Button("Help");
-        Button createTaskButton = new Button("Create New Task");
+        Button dashboardButton = createNavigationButton("Dashboard");
+        Button aboutButton = createNavigationButton("About");
+        Button helpButton = createNavigationButton("Help");
 
-        Dashboard.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 23; -fx-font-weight: bold;");
-        About.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 23; -fx-font-weight: bold;");
-        Help.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 23; -fx-font-weight: bold;");
-
-        HBox hbox = new HBox();
-        hbox.getChildren().addAll(Dashboard, About, Help);
+        HBox navBar = new HBox(dashboardButton, aboutButton, helpButton);
+        navBar.setAlignment(Pos.CENTER);
+        navBar.setSpacing(10);
 
         taskList = new VBox();
         taskList.setAlignment(Pos.CENTER);
         taskList.setSpacing(15);
 
-        loadTasks();
+        Button createTaskButton = new Button("Create New Task");
+        createTaskButton.setStyle("-fx-background-color: #8cfa8c; -fx-font-weight: bold;");
+        createTaskButton.setOnAction(e -> openAddingPage());
 
-        createTaskButton.setOnAction(e -> {
-            Stage addingStage = new Stage();
-            Adding addingPage = new Adding();
-            addingPage.start(addingStage);
-        });
+        VBox taskSection = new VBox(taskList, createTaskButton);
+        taskSection.setAlignment(Pos.CENTER);
+        taskSection.setSpacing(15);
 
-        VBox vbox = new VBox();
-        vbox.getChildren().addAll(taskList, createTaskButton);
-        vbox.setAlignment(Pos.CENTER);
-        vbox.setSpacing(10);
+        loadTasksForUser();
 
-        // All styles for the nodes
-        Dashboard.setOnMouseEntered(e -> {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Dashboard);
-            scaleTransition.setToX(1.1);
-            scaleTransition.setToY(1.1);
-            scaleTransition.play();
-        });
-        Dashboard.setOnMouseExited(e -> {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Dashboard);
-            scaleTransition.setToX(1.0);
-            scaleTransition.setToY(1.0);
-            scaleTransition.play();
-        });
-        About.setOnMouseEntered(e -> {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), About);
-            scaleTransition.setToX(1.1);
-            scaleTransition.setToY(1.1);
-            scaleTransition.play();
-        });
-        About.setOnMouseExited(e -> {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), About);
-            scaleTransition.setToX(1.0);
-            scaleTransition.setToY(1.0);
-            scaleTransition.play();
-        });
-        Help.setOnMouseEntered(e -> {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Help);
-            scaleTransition.setToX(1.1);
-            scaleTransition.setToY(1.1);
-            scaleTransition.play();
-        });
-        Help.setOnMouseExited(e -> {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Help);
-            scaleTransition.setToX(1.0);
-            scaleTransition.setToY(1.0);
-            scaleTransition.play();
-        });
+        BorderPane layout = new BorderPane();
+        layout.setTop(navBar);
+        layout.setCenter(taskSection);
+        layout.setStyle("-fx-background-color: TAN;");
 
-        BorderPane borderPane = new BorderPane();
-        borderPane.setCenter(vbox);
-        borderPane.setTop(hbox);
-        borderPane.setStyle("-fx-background-color: TAN");
-
-        Scene scene = new Scene(borderPane, 1000, 500);
+        Scene scene = new Scene(layout, 1000, 500);
         primaryStage.setTitle("Main Page");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    private void loadTasks() {
-        taskList.getChildren().clear(); // Clear existing tasks
+    private Button createNavigationButton(String text) {
+        Button button = new Button(text);
+        button.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 23; -fx-font-weight: bold;");
+        addHoverEffect(button);
+        return button;
+    }
+
+    private void addHoverEffect(Button button) {
+        button.setOnMouseEntered(e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), button);
+            scaleTransition.setToX(1.1);
+            scaleTransition.setToY(1.1);
+            scaleTransition.play();
+        });
+        button.setOnMouseExited(e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), button);
+            scaleTransition.setToX(1.0);
+            scaleTransition.setToY(1.0);
+            scaleTransition.play();
+        });
+    }
+
+    private void openAddingPage() {
+        Stage addingStage = new Stage();
+        Adding addingPage = new Adding();
+        addingPage.setLoggedInUserId(loggedInUserId); // Pass user ID to the Adding page
+        addingPage.start(addingStage);
+    }
+
+    private void loadTasksForUser() {
+        taskList.getChildren().clear();
         try (Connection connection = Database.getInstance().getConnection()) {
-            String query = "SELECT * FROM " + DBConst.TABLE_TASK + " WHERE deleted = FALSE";
-            PreparedStatement stmt = connection.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                String taskTitle = rs.getString(DBConst.TASK_COLUMN_TITLE);
-                String taskDescription = rs.getString(DBConst.TASK_COLUMN_DESCRIPTION);
-                int taskId = rs.getInt(DBConst.TASK_COLUMN_ID); // Get the task ID
-
-                HBox taskRow = addTaskRow(taskTitle, taskDescription, taskId); // Pass taskId
-                taskList.getChildren().add(taskRow);
+            if (connection != null) {
+                TaskTable taskTable = new TaskTable(connection);
+                List<Task> tasks = taskTable.getTasksByUserId(loggedInUserId); // Get tasks for the logged-in user
+                for (Task task : tasks) {
+                    taskList.getChildren().add(createTaskRow(task));
+                }
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private HBox addTaskRow(String title, String description, int taskId) {
-        CheckBox cb = new CheckBox("Complete");
-        Text taskTitleText = new Text(title);
+    private HBox createTaskRow(Task task) {
+        CheckBox completeCheckBox = new CheckBox();
+        completeCheckBox.setSelected(task.isCompleted());
+        Text taskTitle = new Text(task.getTitle());
 
-        Image updateicon2 = new Image(getClass().getResource("/images/update4.png").toExternalForm());
-        ImageView updateview2 = new ImageView(updateicon2);
-        Image trashcan2 = new Image(getClass().getResource("/images/bin.png").toExternalForm());
-        ImageView trash2 = new ImageView(trashcan2);
-        updateview2.setFitWidth(30);
-        updateview2.setFitHeight(30);
-        trash2.setFitWidth(30);
-        trash2.setFitHeight(30);
+        Button updateButton = createUpdateButton(task);
+        Button deleteButton = createDeleteButton(task);
 
-        Button updateButton = UpdateButton(title, description, taskId); // Corrected
-        Button deleteButton = DeleteButton("/images/bin.png", "Delete");
-
-        HBox taskRow = new HBox(cb, taskTitleText, updateButton, deleteButton);
-        taskRow.setStyle("-fx-background-color: LIGHTBLUE; -fx-background-radius: 10;");
+        HBox taskRow = new HBox(completeCheckBox, taskTitle, updateButton, deleteButton);
         taskRow.setAlignment(Pos.CENTER);
         taskRow.setSpacing(15);
-        taskRow.setMaxWidth(700);
-        taskRow.setMinHeight(50);
-
+        taskRow.setStyle("-fx-background-color: LIGHTBLUE; -fx-background-radius: 10;");
         return taskRow;
     }
 
-    private Button DeleteButton(String path, String action) {
-        Image trashcan2 = new Image(getClass().getResource("/images/bin.png").toExternalForm());
-        ImageView trash2 = new ImageView(trashcan2);
-        trash2.setFitWidth(30);
-        trash2.setFitHeight(30);
-        Button delete = new Button();
-        delete.setGraphic(trash2);
-        return delete;
-    }
-
-    private Button UpdateButton(String title, String description, int taskId) {
-        Image updateicon2 = new Image(getClass().getResource("/images/update4.png").toExternalForm());
-        ImageView updateview2 = new ImageView(updateicon2);
-        updateview2.setFitWidth(30);
-        updateview2.setFitHeight(30);
-        Button update = new Button();
-        update.setGraphic(updateview2);
-
-        update.setOnAction(event -> {
-            // Navigate to the Modify scene
-            Modify modify = new Modify(taskId);
+    private Button createUpdateButton(Task task) {
+        Button updateButton = new Button("Update");
+        updateButton.setStyle("-fx-background-color: #f5c242; -fx-font-weight: bold;");
+        updateButton.setOnAction(e -> {
+            // Navigate to Modify page
+            Modify modifyPage = new Modify(task.getTaskId());
             Stage modifyStage = new Stage();
             try {
-                modify.start(modifyStage);
-            } catch (Exception e) {
-                e.printStackTrace();
+                modifyPage.start(modifyStage);
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         });
-
-        return update;
+        return updateButton;
     }
 
+    private Button createDeleteButton(Task task) {
+        Button deleteButton = new Button("Delete");
+        deleteButton.setStyle("-fx-background-color: #fa8c8c; -fx-font-weight: bold;");
+        deleteButton.setOnAction(e -> {
+            try (Connection connection = Database.getInstance().getConnection()) {
+                if (connection != null) {
+                    TaskTable taskTable = new TaskTable(connection);
+                    boolean isDeleted = taskTable.deleteTask(task.getTaskId());
+                    if (isDeleted) {
+                        System.out.println("Task deleted successfully.");
+                        loadTasksForUser(); // Reload the task list
+                    }
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+        return deleteButton;
+    }
 
     public static void main(String[] args) {
         launch(args);
-    }
-
-    public void setLoggedInUser(String username) {
     }
 }

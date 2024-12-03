@@ -3,62 +3,60 @@ package org.example.projectj3.GUI;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.example.projectj3.Database.Database;
 
 public class dbLogin extends Application {
-    public void start(Stage stage){
-        Text User = new Text("Username");
-        Text Password = new Text("Password");
-        TextArea log = new TextArea("Username");
-        TextArea pass = new TextArea("Password");
+    @Override
+    public void start(Stage stage) {
+        TextField usernameField = new TextField();
+        usernameField.setPromptText("Database Username");
 
+        PasswordField passwordField = new PasswordField();
+        passwordField.setPromptText("Database Password");
 
-        Button Submit = new Button("Submit");//add new submit button
+        TextField dbNameField = new TextField();
+        dbNameField.setPromptText("Database Name");
 
-        User.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
+        Button submitButton = new Button("Connect");
+        Label messageLabel = new Label();
 
-        Password.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
+        submitButton.setOnAction(e -> {
+            String dbName = dbNameField.getText().trim();
+            String dbUser = usernameField.getText().trim();
+            String dbPassword = passwordField.getText().trim();
 
+            if (dbName.isEmpty() || dbUser.isEmpty() || dbPassword.isEmpty()) {
+                messageLabel.setText("Please fill all fields.");
+                return;
+            }
 
+            boolean isConnected = Database.getInstance().initializeConnection(dbName, dbUser, dbPassword);
 
+            if (isConnected) {
+                messageLabel.setText("Connected to the database!");
 
-        //TaskName.setMaxSize(500, 50);
-        //TaskDescription.setMaxSize(500, 150);
+                // Navigate to ChoosePage
+                ChoosePage choosePage = new ChoosePage();
+                try {
+                    choosePage.start(stage);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                messageLabel.setText("Failed to connect. Check credentials.");
+            }
+        });
 
-
-        VBox vbox = new VBox();
-        vbox.getChildren().addAll(User, log, Password, pass, Submit);
+        VBox vbox = new VBox(10, dbNameField, usernameField, passwordField, submitButton, messageLabel);
         vbox.setAlignment(Pos.CENTER);
-        vbox.setSpacing(5);
+        vbox.setStyle("-fx-padding: 20; -fx-background-color: TAN;");
 
-        Submit.setStyle("-fx-background-color: #8cfa8c; -fx-font-size: 15; -fx-font-weight: bold; ");
-
-
-        log.setMaxSize(250, 25);
-        pass.setMaxSize(250, 25);
-
-
-        BorderPane borderPane = new BorderPane();
-        borderPane.setCenter(vbox);
-
-        //borderPane.setBottom(vbox2);
-        borderPane.setStyle("-fx-background-color: TAN");
-
-
-
-        Scene scene = new Scene(borderPane, 1000, 500);
-        //scene.getStylesheets().add(getClass().getResource("resources/css/styles.css").toExternalForm());
-        //String css = this.getClass().getResource("AddModifyStyles.css").toExternalForm();
-        //scene.getStylesheets().add(css);
-        stage.setTitle("Adding New Task");
+        Scene scene = new Scene(new BorderPane(vbox), 400, 300);
+        stage.setTitle("Database Login");
         stage.setScene(scene);
         stage.show();
     }
@@ -67,4 +65,3 @@ public class dbLogin extends Application {
         launch();
     }
 }
-

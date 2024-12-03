@@ -6,6 +6,7 @@ public class Task {
     private String description;
     private boolean isCompleted;
     private boolean isPinned;
+    private String dueDate;
 
     // Constructor
     public Task(int taskId, String title, String description, boolean isCompleted, boolean isPinned) {
@@ -67,6 +68,14 @@ public class Task {
         isPinned = pinned;
     }
 
+    public String getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
+    }
+
     @Override
     public String toString() {
         return "Task{" +
@@ -77,4 +86,5 @@ public class Task {
                 ", isPinned=" + isPinned +
                 '}';
     }
+
 }

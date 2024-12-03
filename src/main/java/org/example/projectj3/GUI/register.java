@@ -66,6 +66,20 @@ public class register extends Application {
         message.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
         grid.add(message, 1, 5);
 
+        // Back Button
+        Button backButton = new Button("Back");
+        backButton.setStyle("-fx-background-color: #f5c242; -fx-font-weight: bold; -fx-font-size: 14px;");
+        grid.add(backButton, 1, 6);
+
+        backButton.setOnAction(e -> {
+            ChoosePage choosePage = new ChoosePage();
+            try {
+                choosePage.start(primaryStage);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
         registerButton.setOnAction(event -> {
             String username = usernameField.getText();
             String email = emailField.getText();
@@ -98,8 +112,6 @@ public class register extends Application {
             if (result) {
                 message.setText("Registration Successful!");
                 message.setTextFill(Color.GREEN);
-
-                // Navigate to main page
                 switchToMainPage();
             } else {
                 message.setText("Failed to register user. Email might already exist.");
@@ -109,7 +121,7 @@ public class register extends Application {
             Database.getInstance().closeConnection();
         });
 
-        Scene scene = new Scene(grid, 400, 300);
+        Scene scene = new Scene(grid, 400, 350);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

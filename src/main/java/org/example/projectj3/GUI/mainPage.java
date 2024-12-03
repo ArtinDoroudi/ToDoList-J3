@@ -122,7 +122,7 @@ public class mainPage extends Application {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    } 
+    }
 
     private HBox addTaskRow(String title, String description, int taskId) {
         CheckBox cb = new CheckBox("Complete");

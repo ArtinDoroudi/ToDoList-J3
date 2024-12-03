@@ -177,6 +177,21 @@ public class TagTable implements TagDAO {
         }
         return -1; // Return -1 if the tag is not found
     }
-
+    public int getTagCount(int tag) {
+        String query = "SELECT COUNT(*) AS TagCount " +
+                "FROM task_tag_table tt " +
+                "JOIN task_table t ON tt.Task_ID = t.Task_ID " +
+                "WHERE t.User_ID = ? AND tt.Tag_ID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, tag);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("TagCount");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
 }

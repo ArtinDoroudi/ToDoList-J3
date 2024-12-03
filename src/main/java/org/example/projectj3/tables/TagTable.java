@@ -121,6 +121,8 @@ public class TagTable implements TagDAO {
     public List<String> getAllTagTitles() {
         List<String> tagTitles = new ArrayList<>();
         String query = "SELECT " + DBConst.TAG_COLUMN_TITLE + " FROM " + DBConst.TABLE_TAG;
+        System.out.println("Fetching tags from the database...");
+        System.out.println("Query: SELECT Tag_Title FROM tags_table");
 
         try (PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {

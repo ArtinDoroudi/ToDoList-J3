@@ -3,5 +3,5 @@ package org.example.projectj3.Database;
 public class Const {
     public static String DB_NAME = "";
     public static String DB_USER = "";
-    public static String DB_PASSWORD = "lfsm1lfsm1";
+    public static String DB_PASSWORD = "";
 }

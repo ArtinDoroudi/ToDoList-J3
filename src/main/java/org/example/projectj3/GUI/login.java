@@ -93,6 +93,7 @@ public class login extends Application {
                 message.setText("Invalid username or password.");
                 message.setTextFill(Color.RED);
             }
+            Database.getInstance().closeConnection();
         });
 
         Scene scene = new Scene(grid, 300, 250);

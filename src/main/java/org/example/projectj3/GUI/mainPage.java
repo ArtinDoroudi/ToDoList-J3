@@ -6,6 +6,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -27,6 +29,7 @@ public class mainPage extends Application {
         try (Connection connection = Database.getInstance().getConnection()) {
             if (connection != null) {
                 this.loggedInUserId = new org.example.projectj3.tables.UserTable(connection).getUserIdByUsername(username);
+                System.out.println("Logged-in User ID: " + this.loggedInUserId);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -42,7 +45,6 @@ public class mainPage extends Application {
         HBox navBar = new HBox(dashboardButton, aboutButton, helpButton);
         navBar.setAlignment(Pos.CENTER);
         navBar.setSpacing(10);
-
         taskList = new VBox();
         taskList.setAlignment(Pos.CENTER);
         taskList.setSpacing(15);
@@ -54,14 +56,11 @@ public class mainPage extends Application {
         VBox taskSection = new VBox(taskList, createTaskButton);
         taskSection.setAlignment(Pos.CENTER);
         taskSection.setSpacing(15);
-
         loadTasksForUser();
-
         BorderPane layout = new BorderPane();
         layout.setTop(navBar);
         layout.setCenter(taskSection);
         layout.setStyle("-fx-background-color: TAN;");
-
         Scene scene = new Scene(layout, 1000, 500);
         primaryStage.setTitle("Main Page");
         primaryStage.setScene(scene);
@@ -100,12 +99,18 @@ public class mainPage extends Application {
     private void loadTasksForUser() {
         taskList.getChildren().clear();
         try (Connection connection = Database.getInstance().getConnection()) {
-            if (connection != null) {
-                TaskTable taskTable = new TaskTable(connection);
-                List<Task> tasks = taskTable.getTasksByUserId(loggedInUserId); // Get tasks for the logged-in user
-                for (Task task : tasks) {
-                    taskList.getChildren().add(createTaskRow(task));
-                }
+            if (connection == null || connection.isClosed()) {
+                System.out.println("Database connection is closed or null!");
+                return;
+            }
+
+            System.out.println("Fetching tasks for user: " + loggedInUserId);
+            TaskTable taskTable = new TaskTable(connection);
+            List<Task> tasks = taskTable.getTasksByUserId(loggedInUserId);
+            System.out.println("Tasks fetched: " + tasks);
+
+            for (Task task : tasks) {
+                taskList.getChildren().add(createTaskRow(task));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -113,14 +118,13 @@ public class mainPage extends Application {
     }
 
     private HBox createTaskRow(Task task) {
-        CheckBox completeCheckBox = new CheckBox();
+        CheckBox completeCheckBox = new CheckBox("Complete");
         completeCheckBox.setSelected(task.isCompleted());
-        Text taskTitle = new Text(task.getTitle());
-
+        Text taskTitleText = new Text(task.getTitle());
         Button updateButton = createUpdateButton(task);
         Button deleteButton = createDeleteButton(task);
 
-        HBox taskRow = new HBox(completeCheckBox, taskTitle, updateButton, deleteButton);
+        HBox taskRow = new HBox(completeCheckBox, taskTitleText, updateButton, deleteButton);
         taskRow.setAlignment(Pos.CENTER);
         taskRow.setSpacing(15);
         taskRow.setStyle("-fx-background-color: LIGHTBLUE; -fx-background-radius: 10;");
@@ -128,10 +132,14 @@ public class mainPage extends Application {
     }
 
     private Button createUpdateButton(Task task) {
-        Button updateButton = new Button("Update");
-        updateButton.setStyle("-fx-background-color: #f5c242; -fx-font-weight: bold;");
+        Image updateIcon = new Image(getClass().getResource("/images/update4.png").toExternalForm());
+        ImageView updateView = new ImageView(updateIcon);
+        updateView.setFitWidth(30);
+        updateView.setFitHeight(30);
+
+        Button updateButton = new Button();
+        updateButton.setGraphic(updateView);
         updateButton.setOnAction(e -> {
-            // Navigate to Modify page
             Modify modifyPage = new Modify(task.getTaskId());
             Stage modifyStage = new Stage();
             try {
@@ -144,8 +152,13 @@ public class mainPage extends Application {
     }
 
     private Button createDeleteButton(Task task) {
-        Button deleteButton = new Button("Delete");
-        deleteButton.setStyle("-fx-background-color: #fa8c8c; -fx-font-weight: bold;");
+        Image deleteIcon = new Image(getClass().getResource("/images/bin.png").toExternalForm());
+        ImageView deleteView = new ImageView(deleteIcon);
+        deleteView.setFitWidth(30);
+        deleteView.setFitHeight(30);
+
+        Button deleteButton = new Button();
+        deleteButton.setGraphic(deleteView);
         deleteButton.setOnAction(e -> {
             try (Connection connection = Database.getInstance().getConnection()) {
                 if (connection != null) {

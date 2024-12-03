@@ -10,7 +10,6 @@ import java.util.List;
 public class UserTable implements UserDAO {
     private final Connection connection;
 
-    // Constructor to a database connection
     public UserTable(Connection connection) {
         this.connection = connection;
     }
@@ -119,7 +118,7 @@ public class UserTable implements UserDAO {
             statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
 
-            // Debugging output
+            // Debugging (GONNA DELETE IT LATER? MAYBE.... WHO KNOWS)
             if (resultSet.next()) {
                 System.out.println("User authenticated: " + userName);
                 return true;

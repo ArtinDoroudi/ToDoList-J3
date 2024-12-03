@@ -39,7 +39,6 @@ public class dbLogin extends Application {
             if (isConnected) {
                 messageLabel.setText("Connected to the database!");
 
-                // Navigate to ChoosePage
                 ChoosePage choosePage = new ChoosePage();
                 try {
                     choosePage.start(stage);

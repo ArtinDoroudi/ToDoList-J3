@@ -20,7 +20,7 @@ public class ChoosePage extends Application {
         loginButton.setOnAction(event -> {
             login loginPage = new login();
             try {
-                loginPage.start(stage); // Navigate to login page
+                loginPage.start(stage);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -29,7 +29,7 @@ public class ChoosePage extends Application {
         registerButton.setOnAction(event -> {
             register registerPage = new register();
             try {
-                registerPage.start(stage); // Navigate to register page
+                registerPage.start(stage);
             } catch (Exception e) {
                 e.printStackTrace();
             }

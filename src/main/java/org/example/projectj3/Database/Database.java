@@ -52,11 +52,20 @@ public class Database {
     }
 
     public Connection getConnection() {
-        if (connection == null) {
-            reconnect();
+        try {
+            if (connection == null || connection.isClosed()) {
+                connection = DriverManager.getConnection(
+                        "jdbc:mysql://localhost:3307/" + dbName + "?serverTimezone=UTC",
+                        dbUser,
+                        dbPassword
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return connection;
     }
+
 
     public void closeConnection() {
         if (connection != null) {

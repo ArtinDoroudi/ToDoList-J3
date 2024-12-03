@@ -96,7 +96,6 @@ public class TaskTable implements TaskDAO {
                 if (keys.next()) {
                     int taskId = keys.getInt(1);
 
-                    // Link task to user
                     String linkQuery = "INSERT INTO user_task_table (User_ID, Task_ID) VALUES (?, ?)";
                     try (PreparedStatement linkStatement = connection.prepareStatement(linkQuery)) {
                         linkStatement.setInt(1, userId);

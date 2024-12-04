@@ -180,26 +180,23 @@ public class TagTable implements TagDAO {
     }
 
 
-    public int getTagCount(int tagId) {
-        int count = -1; 
-        String query = "SELECT * FROM task_tag_table WHERE Tag_ID = ?";
-
-        try (PreparedStatement statement = connection.prepareStatement(
-                query,
-                ResultSet.TYPE_SCROLL_SENSITIVE,
-                ResultSet.CONCUR_UPDATABLE)) {
-
-            statement.setInt(1, tagId);
+    public int getTagCountByUserId(int userId, String tagTitle) {
+        String query = "SELECT COUNT(*) FROM task_table t " +
+                "JOIN task_tag_table tt ON t.Task_ID = tt.Task_ID " +
+                "JOIN tags_table tg ON tt.Tag_ID = tg.Tag_ID " +
+                "JOIN user_task_table ut ON t.Task_ID = ut.Task_ID " +
+                "WHERE ut.User_ID = ? AND tg.Tag_Title = ? AND t.deleted = 0";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            statement.setString(2, tagTitle);
             ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet != null) {
-                resultSet.last();
-                count = resultSet.getRow();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
             }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-        return count;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 }

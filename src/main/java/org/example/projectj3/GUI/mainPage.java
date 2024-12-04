@@ -41,6 +41,12 @@ public class mainPage extends Application {
         Button aboutButton = createNavigationButton("About");
         Button helpButton = createNavigationButton("Help");
 
+        dashboardButton.setOnAction(event -> {
+            Dashboard dashboardPage = new Dashboard();
+            dashboardPage.setLoggedInUser(loggedInUser, loggedInUserId);
+            System.out.println("Current User: " + loggedInUser + ", ID: " + loggedInUserId);
+            dashboardPage.start(primaryStage);
+        });
         HBox navBar = new HBox(dashboardButton, aboutButton, helpButton);
         navBar.setAlignment(Pos.CENTER);
         navBar.setSpacing(10);
@@ -98,7 +104,7 @@ public class mainPage extends Application {
     private void openAddingPage() {
         Stage addingStage = new Stage();
         Adding addingPage = new Adding();
-        addingPage.setLoggedInUserId(loggedInUserId); // Pass user ID to the Adding page
+        addingPage.setLoggedInUserId(loggedInUserId);
         addingPage.start(addingStage);
     }
 

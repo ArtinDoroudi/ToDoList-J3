@@ -132,6 +132,24 @@ public class mainPage extends Application {
     private HBox createTaskRow(Task task) {
         CheckBox completeCheckBox = new CheckBox("Complete");
         completeCheckBox.setSelected(task.isCompleted());
+        completeCheckBox.setOnAction(event -> {
+            try (Connection connection = Database.getInstance().getConnection()) {
+                if (connection != null) {
+                    TaskTable taskTable = new TaskTable(connection);
+                    boolean isUpdated = taskTable.toggleTaskCompletion(task.getTaskId());
+                    if (isUpdated) {
+                        System.out.println("Task marked as completed/incomplete successfully.");
+                        loadTasksForUser();
+                    } else {
+                        System.out.println("Failed to update task completion status.");
+                    }
+                } else {
+                    System.out.println("Database connection is closed or null!");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
         Text taskTitleText = new Text(task.getTitle());
         Button updateButton = createUpdateButton(task);
         Button deleteButton = createDeleteButton(task);
@@ -142,6 +160,7 @@ public class mainPage extends Application {
         taskRow.setStyle("-fx-background-color: LIGHTBLUE; -fx-background-radius: 10;");
         return taskRow;
     }
+
 
     private Button createUpdateButton(Task task) {
         Image updateIcon = new Image(getClass().getResource("/images/update4.png").toExternalForm());

@@ -2,140 +2,126 @@ package org.example.projectj3.GUI;
 
 import javafx.animation.ScaleTransition;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import javafx.scene.image.ImageView;
-import javafx.scene.image.Image;
 import org.example.projectj3.Database.Database;
+import org.example.projectj3.tables.TagTable;
+import org.example.projectj3.tables.TaskTable;
+import org.example.projectj3.pojo.Task;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
-
-import static javafx.application.Application.launch;
+import java.util.List;
 
 public class Modify extends Application {
-    private int taskId;
+    private final int taskId;
 
     public Modify(int taskId) {
         this.taskId = taskId;
     }
 
-
+    @Override
     public void start(Stage stage) {
-        Text UpdateTask = new Text("Update Task");
-        Text UpdateDescription = new Text("Update Description");
-        Text Date = new Text("Date");
-        Text tag = new Text("Tag");
-        TextArea UpdateTaskName = new TextArea("Update your task Here");
-        TextArea UpdateTaskDescription = new TextArea(" Update Description");
-        DatePicker dueDate = new DatePicker();
-        Button Dashboard = new Button("Dashboard");
-        Button About = new Button("About");
-        Button Help = new Button("Help");
-        Button Submit = new Button("Submit");
-        ComboBox<String> Tags = new ComboBox<>();
+        Task task = fetchTaskDetails(taskId);
+        if (task == null) {
+            System.out.println("Task not found!");
+            return;
+        }
+        Text updateTaskLabel = new Text("Update Task");
+        Text updateDescriptionLabel = new Text("Update Description");
+        Text dateLabel = new Text("Date");
+        Text tagLabel = new Text("Tag");
 
+        TextArea taskTitleField = new TextArea(task.getTitle());
+        TextArea taskDescriptionField = new TextArea(task.getDescription());
+        DatePicker dueDatePicker = new DatePicker();
+        ComboBox<String> tagComboBox = new ComboBox<>();
+        Button submitButton = new Button("Submit");
 
-        UpdateTask.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
+        dueDatePicker.setPromptText(task.getDueDate() != null ? task.getDueDate() : "Set due date");
+        loadTags(tagComboBox); // Load tags into ComboBox
 
-        UpdateDescription.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
+        updateTaskLabel.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
+        updateDescriptionLabel.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
+        dateLabel.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
+        tagLabel.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
+        submitButton.setStyle("-fx-background-color: #8cfa8c; -fx-font-size: 15; -fx-font-weight: bold;");
 
-        tag.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
+        taskTitleField.setMaxSize(500, 50);
+        taskDescriptionField.setMaxSize(500, 150);
 
-        Date.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
+        VBox form = new VBox(10, updateTaskLabel, taskTitleField, updateDescriptionLabel, taskDescriptionField, dateLabel, dueDatePicker, tagLabel, tagComboBox, submitButton);
+        form.setAlignment(Pos.CENTER);
+        form.setPadding(new Insets(20));
 
+        BorderPane layout = new BorderPane();
+        layout.setCenter(form);
+        layout.setStyle("-fx-background-color: TAN;");
 
-        UpdateTaskName.setMaxSize(500, 50);
-        UpdateTaskDescription.setMaxSize(500, 150);
-        Dashboard.setOnMouseEntered(e -> {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Dashboard);
-            scaleTransition.setToX(1.1);
-            scaleTransition.setToY(1.1);
-            scaleTransition.play();
-        });
-        Dashboard.setOnMouseExited(e -> {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Dashboard);
-            scaleTransition.setToX(1.0);
-            scaleTransition.setToY(1.0);
-            scaleTransition.play();
-        });
-        About.setOnMouseEntered(e -> {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), About);
-            scaleTransition.setToX(1.1);
-            scaleTransition.setToY(1.1);
-            scaleTransition.play();
-        });
-        About.setOnMouseExited(e -> {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), About);
-            scaleTransition.setToX(1.0);
-            scaleTransition.setToY(1.0);
-            scaleTransition.play();
-        });
-        Help.setOnMouseEntered(e -> {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Help);
-            scaleTransition.setToX(1.1);
-            scaleTransition.setToY(1.1);
-            scaleTransition.play();
-        });
-        Help.setOnMouseExited(e -> {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), Help);
-            scaleTransition.setToX(1.0);
-            scaleTransition.setToY(1.0);
-            scaleTransition.play();
-        });
-
-
-        Dashboard.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 20; -fx-font-weight: bold;");
-        About.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 20; -fx-font-weight: bold;");
-        Help.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 20; -fx-font-weight: bold;");
-
-        HBox hbox = new HBox();
-        hbox.getChildren().addAll(Dashboard, About, Help);
-
-
-        Tags.getItems().addAll("Important", "Gym", "School", "Family");
-
-        VBox vbox = new VBox();
-        vbox.getChildren().addAll(UpdateTask, UpdateTaskName, UpdateDescription, UpdateTaskDescription, Date, dueDate, tag, Tags, Submit);
-        vbox.setAlignment(Pos.CENTER);
-        vbox.setSpacing(3);
-
-        Submit.setStyle("-fx-background-color: #8cfa8c; -fx-font-size: 15; -fx-font-weight: bold; ");
-
-
-        BorderPane borderPane = new BorderPane();
-        borderPane.setCenter(vbox);
-        borderPane.setTop(hbox);
-        borderPane.setStyle("-fx-background-color: TAN");
-
-        
-
-        Scene scene = new Scene(borderPane, 1000, 500);
-        stage.setTitle("Update Task");
+        Scene scene = new Scene(layout, 600, 400);
         stage.setScene(scene);
+        stage.setTitle("Modify Task");
         stage.show();
 
+        submitButton.setOnAction(e -> {
+            String updatedTitle = taskTitleField.getText();
+            String updatedDescription = taskDescriptionField.getText();
+            String updatedDueDate = dueDatePicker.getValue() != null ? dueDatePicker.getValue().toString() : null;
+            String selectedTag = tagComboBox.getValue();
 
+            if (updatedTitle.isEmpty() || updatedDescription.isEmpty() || updatedDueDate == null || selectedTag == null) {
+                System.out.println("Please fill in all fields!");
+                return;
+            }
+
+            task.setTitle(updatedTitle);
+            task.setDescription(updatedDescription);
+            task.setDueDate(updatedDueDate);
+
+            boolean success = updateTask(task);
+            if (success) {
+                System.out.println("Task updated successfully!");
+                stage.close();
+            } else {
+                System.out.println("Failed to update task.");
+            }
+        });
     }
 
+    private Task fetchTaskDetails(int taskId) {
+        try (Connection connection = Database.getInstance().getConnection()) {
+            TaskTable taskTable = new TaskTable(connection);
+            return taskTable.getTaskById(taskId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
+    private void loadTags(ComboBox<String> comboBox) {
+        try (Connection connection = Database.getInstance().getConnection()) {
+            TagTable tagTable = new TagTable(connection);
+            List<String> tags = tagTable.getAllTagTitles();
+            comboBox.getItems().addAll(tags);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-
+    private boolean updateTask(Task task) {
+        try (Connection connection = Database.getInstance().getConnection()) {
+            TaskTable taskTable = new TaskTable(connection);
+            return taskTable.updateTask(task);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     public static void main(String[] args) {
         launch();

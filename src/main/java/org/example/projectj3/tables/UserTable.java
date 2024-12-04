@@ -10,7 +10,6 @@ import java.util.List;
 public class UserTable implements UserDAO {
     private final Connection connection;
 
-    // Constructor to a database connection
     public UserTable(Connection connection) {
         this.connection = connection;
     }
@@ -119,7 +118,7 @@ public class UserTable implements UserDAO {
             statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
 
-            // Debugging output
+            // Debugging (GONNA DELETE IT LATER? MAYBE.... WHO KNOWS)
             if (resultSet.next()) {
                 System.out.println("User authenticated: " + userName);
                 return true;
@@ -132,4 +131,18 @@ public class UserTable implements UserDAO {
         return false;
     }
 
+    public int getUserIdByUsername(String username) {
+        String query = "SELECT User_ID FROM user_table WHERE User_Name = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("User_ID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }

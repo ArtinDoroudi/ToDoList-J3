@@ -27,8 +27,10 @@ public class Adding extends Application {
     public void start(Stage stage) {
         connection = Database.getInstance().getConnection();
         if (connection == null) {
-            System.out.println("Failed to connect to the database. Exiting...");
+            System.out.println("Connection is null in Adding class.");
             return;
+        } else {
+            System.out.println("Connection established in Adding class.");
         }
 
         Text taskLabel = new Text("Task");
@@ -50,7 +52,9 @@ public class Adding extends Application {
 
         // Populate tag dropdown
         TagTable tagTable = new TagTable(connection);
+        System.out.println("Fetching tags...");
         List<String> tags = tagTable.getAllTagTitles();
+        System.out.println("Tags fetched: " + tags);
         if (!tags.isEmpty()) {
             tagsComboBox.getItems().addAll(tags);
         } else {

@@ -121,6 +121,8 @@ public class TagTable implements TagDAO {
     public List<String> getAllTagTitles() {
         List<String> tagTitles = new ArrayList<>();
         String query = "SELECT " + DBConst.TAG_COLUMN_TITLE + " FROM " + DBConst.TABLE_TAG;
+        System.out.println("Fetching tags from the database...");
+        System.out.println("Query: SELECT Tag_Title FROM tags_table");
 
         try (PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
@@ -157,6 +159,7 @@ public class TagTable implements TagDAO {
         return tags;
     }
 
+
     public int getTagIdByTitle(String tagTitle) {
         String query = "SELECT " + DBConst.TAG_COLUMN_ID + " FROM " + DBConst.TABLE_TAG +
                 " WHERE " + DBConst.TAG_COLUMN_TITLE + " = ?";
@@ -170,11 +173,33 @@ public class TagTable implements TagDAO {
             } else {
                 System.out.println("No tag found for title: " + tagTitle); // Debugging
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1; // Return -1 if the tag is not found
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+                    return -1; 
     }
 
+
+    public int getTagCount(int tagId) {
+        int count = -1; 
+        String query = "SELECT * FROM task_tag_table WHERE Tag_ID = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(
+                query,
+                ResultSet.TYPE_SCROLL_SENSITIVE,
+                ResultSet.CONCUR_UPDATABLE)) {
+
+            statement.setInt(1, tagId);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet != null) {
+                resultSet.last();
+                count = resultSet.getRow();
+            }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+        return count;
+    }
 
 }

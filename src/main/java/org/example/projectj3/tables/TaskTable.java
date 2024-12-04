@@ -84,23 +84,28 @@ public class TaskTable implements TaskDAO {
 
     @Override
     public boolean createTask(Task task, int userId) {
-        String query = "INSERT INTO task_table (Task_Title, Task_Description, Task_Due_Date, is_Completed, is_Pinned, deleted) " +
-                "VALUES (?, ?, ?, false, false, false)";
+        String query = "INSERT INTO task_table (Task_Title, Task_Description, Task_Due_Date, is_Completed, is_Pinned) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, task.getTitle());
             statement.setString(2, task.getDescription());
             statement.setString(3, task.getDueDate());
-            int rowsInserted = statement.executeUpdate();
+            statement.setBoolean(4, task.isCompleted());
+            statement.setBoolean(5, task.isPinned());
 
+            int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
                 ResultSet keys = statement.getGeneratedKeys();
                 if (keys.next()) {
-                    int generatedTaskId = keys.getInt(1); // Get the generated Task ID
-                    task.setTaskId(generatedTaskId); // Set Task ID in the Task object
-                    System.out.println("Task created with ID: " + generatedTaskId);
+                    int taskId = keys.getInt(1);
+                    task.setTaskId(taskId);
 
-                    // Now link the task to the user
-                    return assignTaskToUser(userId, generatedTaskId);
+                    String linkQuery = "INSERT INTO user_task_table (User_ID, Task_ID) VALUES (?, ?)";
+                    try (PreparedStatement linkStatement = connection.prepareStatement(linkQuery)) {
+                        linkStatement.setInt(1, userId);
+                        linkStatement.setInt(2, taskId);
+                        linkStatement.executeUpdate();
+                    }
+                    return true;
                 }
             }
         } catch (SQLException e) {
@@ -108,7 +113,6 @@ public class TaskTable implements TaskDAO {
         }
         return false;
     }
-
 
     @Override
     public boolean updateTask(Task task) {

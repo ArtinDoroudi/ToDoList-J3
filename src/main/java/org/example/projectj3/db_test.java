@@ -8,7 +8,7 @@ public class db_test {
         if (db.getConnection() != null) {
             System.out.println("Connection to the database is successful!");
             // Close the connection after testing
-            db.closeConnection();
+
         } else {
             System.out.println("Failed to connect to the database.");
         }

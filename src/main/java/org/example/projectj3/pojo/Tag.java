@@ -4,10 +4,13 @@ public class Tag {
     private int tagId;
     private String title;
 
+
+
     // Constructors
     public Tag(int tagId, String title) {
         this.tagId = tagId;
         this.title = title;
+
     }
 
     public Tag(String title) {
@@ -32,6 +35,8 @@ public class Tag {
     public void setTitle(String title) {
         this.title = title;
     }
+
+
 
     @Override
     public String toString() {

@@ -57,11 +57,11 @@ public class DBConst {
 
     public static final String CREATE_TABLE_USER_TASK =
             "CREATE TABLE " + TABLE_USER_TASK + " (" +
-                    USER_TASK_COLUMN_USER_ID + " int, " +
-                    USER_TASK_COLUMN_TASK_ID + " int, " +
-                    "FOREIGN KEY(" + USER_TASK_COLUMN_USER_ID + ") REFERENCES " + TABLE_USER + "(" + USER_COLUMN_ID + ") ON DELETE CASCADE, " +
-                    "FOREIGN KEY(" + USER_TASK_COLUMN_TASK_ID + ") REFERENCES " + TABLE_TASK + "(" + TASK_COLUMN_ID + ") ON DELETE CASCADE, " +
-                    "PRIMARY KEY(" + USER_TASK_COLUMN_USER_ID + ", " + USER_TASK_COLUMN_TASK_ID + "));";
+                    USER_TASK_COLUMN_USER_ID + " int NOT NULL, " +
+                    USER_TASK_COLUMN_TASK_ID + " int NOT NULL, " +
+                    "PRIMARY KEY(" + USER_TASK_COLUMN_USER_ID + ", " + USER_TASK_COLUMN_TASK_ID + ")" +
+                    ");";
+
 
     // Task-Tag Relationship Table (Many-to-Many)
     public static final String TABLE_TASK_TAG = "task_tag_table";
@@ -70,9 +70,9 @@ public class DBConst {
 
     public static final String CREATE_TABLE_TASK_TAG =
             "CREATE TABLE " + TABLE_TASK_TAG + " (" +
-                    TASK_TAG_COLUMN_TASK_ID + " int, " +
-                    TASK_TAG_COLUMN_TAG_ID + " int, " +
-                    "FOREIGN KEY(" + TASK_TAG_COLUMN_TASK_ID + ") REFERENCES " + TABLE_TASK + "(" + TASK_COLUMN_ID + ") ON DELETE CASCADE, " +
-                    "FOREIGN KEY(" + TASK_TAG_COLUMN_TAG_ID + ") REFERENCES " + TABLE_TAG + "(" + TAG_COLUMN_ID + ") ON DELETE CASCADE, " +
-                    "PRIMARY KEY(" + TASK_TAG_COLUMN_TASK_ID + ", " + TASK_TAG_COLUMN_TAG_ID + "));";
+                    TASK_TAG_COLUMN_TASK_ID + " int NOT NULL, " +
+                    TASK_TAG_COLUMN_TAG_ID + " int NOT NULL, " +
+                    "PRIMARY KEY(" + TASK_TAG_COLUMN_TASK_ID + ", " + TASK_TAG_COLUMN_TAG_ID + ")" +
+                    ");";
+
 }

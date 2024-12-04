@@ -5,11 +5,12 @@ import org.example.projectj3.pojo.Tag;
 import org.example.projectj3.tables.TagTable;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public class TagTableTest {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         Connection connection = Database.getInstance().getConnection();
         if (connection == null) {
             System.out.println("Failed to establish a database connection.");
@@ -57,7 +58,7 @@ public class TagTableTest {
 
     private static void testUpdateTag(TagTable tagTable) {
         System.out.println("\nRunning testUpdateTag...");
-        Tag tag = new Tag(1, "High Priority"); // this 1 is a valid Tag_ID
+        Tag tag = new Tag(1,"High Priority" ); // this 1 is a valid Tag_ID
         boolean result = tagTable.updateTag(tag);
         System.out.println("Tag updated: " + result);
     }

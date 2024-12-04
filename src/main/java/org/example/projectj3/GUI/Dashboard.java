@@ -38,6 +38,9 @@ public class Dashboard extends Application {
         chart.setTitle("Tag Usage");
         chart.setLabelsVisible(true);
         generateChart();
+        chart.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+
+
 
         Button backButton = new Button("Back to Main Page");
         backButton.setStyle("-fx-background-color: #f5c242; -fx-font-size: 15; -fx-font-weight: bold;");
@@ -57,6 +60,8 @@ public class Dashboard extends Application {
         TextArea log = new TextArea("Username");
         TextArea pass = new TextArea("Password");
         Button Update = new Button("Update");
+
+        UpdateUserLogin.setStyle("-fx-background-color: #f5c242; -fx-font-size: 13; -fx-font-weight: bold;");
 
 
         UpdateUserLogin.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");

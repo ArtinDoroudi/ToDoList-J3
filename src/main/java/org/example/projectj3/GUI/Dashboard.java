@@ -7,8 +7,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.example.projectj3.tables.TagTable;
 
@@ -48,12 +51,39 @@ public class Dashboard extends Application {
             }
         });
 
+        Text UpdateUserLogin = new Text("Update User Login");
+        Text User = new Text("Username");
+        Text Password = new Text("Password");
+        TextArea log = new TextArea("Username");
+        TextArea pass = new TextArea("Password");
+        Button Update = new Button("Update");
+
+
+        UpdateUserLogin.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+
+        User.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
+        Password.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
+        log.setMaxSize(250, 25);
+        pass.setMaxSize(250, 25);
+
+        VBox vbox = new VBox();
+        vbox.getChildren().addAll(UpdateUserLogin, User,log,Password,pass,Update);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setSpacing(15);
+
+        BorderPane login = new BorderPane();
+        login.setRight(vbox);
 
         HBox buttonBox = new HBox(backButton);
         buttonBox.setAlignment(Pos.CENTER);
 
+        HBox center = new HBox();
+        center.getChildren().addAll(vbox, chart);
+        center.setAlignment(Pos.CENTER);
+        center.setSpacing(15);
+
         BorderPane layout = new BorderPane();
-        layout.setCenter(chart);
+        layout.setCenter(center);
         layout.setBottom(buttonBox);
         layout.setStyle("-fx-background-color: TAN");
 

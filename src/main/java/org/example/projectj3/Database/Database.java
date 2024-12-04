@@ -11,6 +11,11 @@ public class Database {
     private String dbUser;
     private String dbPassword;
 
+    private static final String[] DEFAULT_TAGS = {
+            "High Priority", "Medium Priority", "Low Priority", "Urgent", "Optional",
+            "School", "Gym", "Work", "Personal", "Hobby"
+    };
+
     private Database() {
     }
 
@@ -38,12 +43,13 @@ public class Database {
             );
             System.out.println("Connected to database!");
 
-            createTable("users", CREATE_TABLE_USER);
-            createTable("tasks", CREATE_TABLE_TASK);
-            createTable("tags", CREATE_TABLE_TAG);
+            createTable("user_table", CREATE_TABLE_USER);
+            createTable("task_table", CREATE_TABLE_TASK);
+            createTable("tags_table", CREATE_TABLE_TAG);
             createTable("user_tasks", CREATE_TABLE_USER_TASK);
             createTable("task_tags", CREATE_TABLE_TASK_TAG);
 
+            insertDefaultTags();
             return true;
         } catch (Exception e) {
             System.out.println("Connection failed: " + e.getMessage());
@@ -65,7 +71,6 @@ public class Database {
         }
         return connection;
     }
-
 
     public void closeConnection() {
         if (connection != null) {
@@ -93,6 +98,30 @@ public class Database {
             }
         } catch (SQLException e) {
             System.out.println("Error during table creation for " + tableName + ": " + e.getMessage());
+        }
+    }
+
+
+    private void insertDefaultTags() {
+        String checkQuery = "SELECT COUNT(*) FROM " + TABLE_TAG;
+        String insertQuery = "INSERT INTO " + TABLE_TAG + " (" + TAG_COLUMN_TITLE + ") VALUES (?)";
+
+        try (PreparedStatement checkStmt = connection.prepareStatement(checkQuery);
+             PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
+
+            ResultSet rs = checkStmt.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                System.out.println("Default tags already exist.");
+                return;
+            }
+
+            for (String tag : DEFAULT_TAGS) {
+                insertStmt.setString(1, tag);
+                insertStmt.executeUpdate();
+            }
+            System.out.println("Default tags inserted successfully.");
+        } catch (SQLException e) {
+            System.out.println("Error inserting default tags: " + e.getMessage());
         }
     }
 }

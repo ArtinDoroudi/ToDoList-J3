@@ -84,12 +84,13 @@ public class TaskTable implements TaskDAO {
 
     @Override
     public boolean createTask(Task task, int userId) {
-        String query = "INSERT INTO task_table (Task_Title, Task_Description, is_Completed, is_Pinned) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO task_table (Task_Title, Task_Description, Task_Due_Date, is_Completed, is_Pinned) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, task.getTitle());
             statement.setString(2, task.getDescription());
-            statement.setBoolean(3, task.isCompleted());
-            statement.setBoolean(4, task.isPinned());
+            statement.setString(3, task.getDueDate());
+            statement.setBoolean(4, task.isCompleted());
+            statement.setBoolean(5, task.isPinned());
 
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {

@@ -10,6 +10,11 @@ import javafx.stage.Stage;
 import org.example.projectj3.Database.Database;
 
 public class dbLogin extends Application {
+
+    /**
+     * Start method for dbLogin
+     * @param stage
+     */
     @Override
     public void start(Stage stage) {
         TextField usernameField = new TextField();

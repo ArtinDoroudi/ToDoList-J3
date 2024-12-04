@@ -19,6 +19,10 @@ public class login extends Application {
 
     private Stage primaryStage;
 
+    /**
+     * Start method for login
+     * @param primaryStage
+     */
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -51,7 +55,6 @@ public class login extends Application {
         grid.add(message, 1, 4);
         message.setTextFill(Color.RED);
 
-        // Back Button
         Button backButton = new Button("Back");
         backButton.setStyle("-fx-background-color: #f5c242; -fx-font-weight: bold; -fx-font-size: 14px;");
         grid.add(backButton, 1, 5);
@@ -102,6 +105,10 @@ public class login extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Switch to main page
+     * @param username
+     */
     private void switchToMainPage(String username) {
         mainPage mainPageInstance = new mainPage();
         mainPageInstance.setLoggedInUser(username);

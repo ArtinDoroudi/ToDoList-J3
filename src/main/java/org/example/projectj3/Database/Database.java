@@ -19,6 +19,11 @@ public class Database {
     private Database() {
     }
 
+    /**
+     * Get the instance of the database
+     *
+     * @return Database
+     */
     public static Database getInstance() {
         if (instance == null) {
             instance = new Database();
@@ -26,6 +31,14 @@ public class Database {
         return instance;
     }
 
+    /**
+     * Initialize the connection to the database
+     *
+     * @param dbName     Name of the database
+     * @param dbUser     Username for the database
+     * @param dbPassword Password for the database
+     * @return boolean
+     */
     public boolean initializeConnection(String dbName, String dbUser, String dbPassword) {
         this.dbName = dbName;
         this.dbUser = dbUser;
@@ -33,6 +46,11 @@ public class Database {
         return reconnect();
     }
 
+    /**
+     * Reconnect to the database
+     *
+     * @return boolean
+     */
     private boolean reconnect() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -57,6 +75,11 @@ public class Database {
         }
     }
 
+    /**
+     * Get the connection to the database
+     *
+     * @return Connection
+     */
     public Connection getConnection() {
         try {
             if (connection == null || connection.isClosed()) {
@@ -72,6 +95,9 @@ public class Database {
         return connection;
     }
 
+    /**
+     * Close the connection to the database
+     */
     public void closeConnection() {
         if (connection != null) {
             try {
@@ -84,6 +110,13 @@ public class Database {
         }
     }
 
+    /**
+     * Create a table if it does not exist
+     *
+     * @param tableName  Name of the table
+     * @param tableQuery SQL query to create the table
+     * @throws SQLException
+     */
     private void createTable(String tableName, String tableQuery) throws SQLException {
         DatabaseMetaData metaData = connection.getMetaData();
 
@@ -102,6 +135,9 @@ public class Database {
     }
 
 
+    /**
+     * Insert default tags into the database
+     */
     private void insertDefaultTags() {
         String checkQuery = "SELECT COUNT(*) FROM " + TABLE_TAG;
         String insertQuery = "INSERT INTO " + TABLE_TAG + " (" + TAG_COLUMN_TITLE + ") VALUES (?)";

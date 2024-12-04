@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 import org.example.projectj3.tables.TagTable;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Dashboard extends Application {
@@ -24,6 +23,10 @@ public class Dashboard extends Application {
     private PieChart chart;
     private String loggedInUser;
 
+    /**
+     * Setter for logged in user
+     * @param username
+     */
     public void setLoggedInUser(String username, int userId) {
         this.loggedInUser = username;
         this.loggedInUserId = userId;
@@ -32,6 +35,9 @@ public class Dashboard extends Application {
         this.loggedInUserId = userId;
     }
 
+    /**
+     * Getter for logged in user
+     */
     @Override
     public void start(Stage stage) {
         chart = new PieChart();
@@ -39,8 +45,6 @@ public class Dashboard extends Application {
         chart.setLabelsVisible(true);
         generateChart();
         chart.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-
-
 
         Button backButton = new Button("Back to Main Page");
         backButton.setStyle("-fx-background-color: #f5c242; -fx-font-size: 15; -fx-font-weight: bold;");
@@ -54,25 +58,20 @@ public class Dashboard extends Application {
             }
         });
 
-        Text UpdateUserLogin = new Text("Update User Login");
-        Text User = new Text("Username");
-        Text Password = new Text("Password");
+        Text updateUserLogin = new Text("Update User Login");
+        Text user = new Text("Username");
+        Text password = new Text("Password");
         TextArea log = new TextArea("Username");
         TextArea pass = new TextArea("Password");
-        Button Update = new Button("Update");
+        Button update = new Button("Update");
 
-        UpdateUserLogin.setStyle("-fx-background-color: #f5c242; -fx-font-size: 13; -fx-font-weight: bold;");
-
-
-        UpdateUserLogin.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
-
-        User.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
-        Password.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
+        updateUserLogin.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+        user.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
+        password.setStyle("-fx-font-size: 21px; -fx-font-weight: bold;");
         log.setMaxSize(250, 25);
         pass.setMaxSize(250, 25);
 
-        VBox vbox = new VBox();
-        vbox.getChildren().addAll(UpdateUserLogin, User,log,Password,pass,Update);
+        VBox vbox = new VBox(updateUserLogin, user, log, password, pass, update);
         vbox.setAlignment(Pos.CENTER);
         vbox.setSpacing(15);
 
@@ -82,8 +81,7 @@ public class Dashboard extends Application {
         HBox buttonBox = new HBox(backButton);
         buttonBox.setAlignment(Pos.CENTER);
 
-        HBox center = new HBox();
-        center.getChildren().addAll(vbox, chart);
+        HBox center = new HBox(vbox, chart);
         center.setAlignment(Pos.CENTER);
         center.setSpacing(15);
 
@@ -96,8 +94,50 @@ public class Dashboard extends Application {
         stage.setTitle("Dashboard");
         stage.setScene(scene);
         stage.show();
+
+        // NOTE: IT DOES NOT WORK
+        update.setOnAction(event -> {
+            String newUsername = log.getText().trim();
+            String newPassword = pass.getText().trim();
+
+            if (newUsername.isEmpty() || newPassword.isEmpty()) {
+                System.out.println("Username or Password cannot be empty!");
+                return;
+            }
+
+            try (Connection connection = org.example.projectj3.Database.Database.getInstance().getConnection()) {
+                if (connection == null || connection.isClosed()) {
+                    System.out.println("Database connection is closed or null!");
+                    return;
+                }
+
+                org.example.projectj3.tables.UserTable userTable = new org.example.projectj3.tables.UserTable(connection);
+                org.example.projectj3.pojo.User currentUser = userTable.getUserById(loggedInUserId);
+
+                if (currentUser != null) {
+                    currentUser.setUserName(newUsername);
+                    currentUser.setPassword(newPassword);
+
+                    boolean isUpdated = userTable.updateUser(currentUser);
+
+                    if (isUpdated) {
+                        System.out.println("Username and Password updated successfully!");
+                        this.loggedInUser = newUsername;
+                    } else {
+                        System.out.println("Failed to update Username and Password.");
+                    }
+                } else {
+                    System.out.println("User not found in the database!");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
+    /**
+     * Generate the chart for the dashboard
+     */
     private void generateChart() {
         try (Connection connection = org.example.projectj3.Database.Database.getInstance().getConnection()) {
             if (connection == null || connection.isClosed()) {

@@ -7,8 +7,15 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * ChoosePage class
+ */
 public class ChoosePage extends Application {
 
+    /**
+     * Start method for ChoosePage
+     * @param stage stage
+     */
     @Override
     public void start(Stage stage) {
         Button loginButton = new Button("Login");
@@ -45,6 +52,10 @@ public class ChoosePage extends Application {
         stage.show();
     }
 
+    /**
+     * Main method
+     * @param args args
+     */
     public static void main(String[] args) {
         launch();
     }

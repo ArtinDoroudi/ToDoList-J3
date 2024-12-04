@@ -25,6 +25,10 @@ public class Modify extends Application {
         this.taskId = taskId;
     }
 
+    /**
+     * Start method for Modify
+     * @param stage
+     */
     @Override
     public void start(Stage stage) {
         Task task = fetchTaskDetails(taskId);
@@ -93,6 +97,11 @@ public class Modify extends Application {
         });
     }
 
+    /**
+     * Fetch task details from the database
+     * @param taskId
+     * @return
+     */
     private Task fetchTaskDetails(int taskId) {
         try (Connection connection = Database.getInstance().getConnection()) {
             TaskTable taskTable = new TaskTable(connection);
@@ -103,6 +112,10 @@ public class Modify extends Application {
         }
     }
 
+    /**
+     * Load tags into ComboBox
+     * @param comboBox
+     */
     private void loadTags(ComboBox<String> comboBox) {
         try (Connection connection = Database.getInstance().getConnection()) {
             TagTable tagTable = new TagTable(connection);
@@ -113,6 +126,11 @@ public class Modify extends Application {
         }
     }
 
+    /**
+     * Update task in the database
+     * @param task
+     * @return
+     */
     private boolean updateTask(Task task) {
         try (Connection connection = Database.getInstance().getConnection()) {
             TaskTable taskTable = new TaskTable(connection);

@@ -12,10 +12,18 @@ import java.util.List;
 public class TagTable implements TagDAO {
     private final Connection connection;
 
+    /**
+     * Constructor for TagTable
+     * @param connection
+     */
     public TagTable(Connection connection) {
         this.connection = connection;
     }
 
+    /**
+     * Getter for all tags
+     * @return tags
+     */
     @Override
     public List<Tag> getAllTags() {
         List<Tag> tags = new ArrayList<>();
@@ -34,6 +42,11 @@ public class TagTable implements TagDAO {
         return tags;
     }
 
+    /**
+     * Getter for tag by ID
+     * @param tagId
+     * @return tag
+     */
     @Override
     public Tag getTagById(int tagId) {
         String query = "SELECT * FROM tags_table WHERE Tag_ID = ?";
@@ -52,6 +65,11 @@ public class TagTable implements TagDAO {
         return null;
     }
 
+    /**
+     * Create a tag
+     * @param tag
+     * @return boolean
+     */
     @Override
     public boolean createTag(Tag tag) {
         String query = "INSERT INTO tags_table (Tag_Title) VALUES (?)";
@@ -71,6 +89,11 @@ public class TagTable implements TagDAO {
         return false;
     }
 
+    /**
+     * Update a tag
+     * @param tag
+     * @return boolean
+     */
     @Override
     public boolean updateTag(Tag tag) {
         String query = "UPDATE tags_table SET Tag_Title = ? WHERE Tag_ID = ?";
@@ -84,6 +107,11 @@ public class TagTable implements TagDAO {
         return false;
     }
 
+    /**
+     * Delete a tag
+     * @param tagId
+     * @return boolean
+     */
     @Override
     public boolean deleteTag(int tagId) {
         String query = "DELETE FROM tags_table WHERE Tag_ID = ?";
@@ -96,6 +124,12 @@ public class TagTable implements TagDAO {
         return false;
     }
 
+    /**
+     * Link a tag to a task
+     * @param taskId
+     * @param tagId
+     * @return boolean
+     */
     @Override
     public boolean linkTagToTask(int taskId, int tagId) {
         String insertTaskTagSql = "INSERT INTO " + DBConst.TABLE_TASK_TAG + " (" +
@@ -117,7 +151,10 @@ public class TagTable implements TagDAO {
 
 
 
-
+    /**
+     * Get all tag titles
+     * @return tagTitles
+     */
     public List<String> getAllTagTitles() {
         List<String> tagTitles = new ArrayList<>();
         String query = "SELECT " + DBConst.TAG_COLUMN_TITLE + " FROM " + DBConst.TABLE_TAG;
@@ -137,7 +174,11 @@ public class TagTable implements TagDAO {
     }
 
 
-
+    /**
+     * Get tags by task ID
+     * @param taskId
+     * @return tags
+     */
     @Override
     public List<Tag> getTagsByTaskId(int taskId) {
         List<Tag> tags = new ArrayList<>();
@@ -159,7 +200,11 @@ public class TagTable implements TagDAO {
         return tags;
     }
 
-
+    /**
+     * Get tag ID by title
+     * @param tagTitle
+     * @return tagId
+     */
     public int getTagIdByTitle(String tagTitle) {
         String query = "SELECT " + DBConst.TAG_COLUMN_ID + " FROM " + DBConst.TABLE_TAG +
                 " WHERE " + DBConst.TAG_COLUMN_TITLE + " = ?";
@@ -180,6 +225,12 @@ public class TagTable implements TagDAO {
     }
 
 
+    /**
+     * Get tag count by user ID
+     * @param userId
+     * @param tagTitle
+     * @return tagCount
+     */
     public int getTagCountByUserId(int userId, String tagTitle) {
         String query = "SELECT COUNT(*) FROM task_table t " +
                 "JOIN task_tag_table tt ON t.Task_ID = tt.Task_ID " +

@@ -18,6 +18,10 @@ public class register extends Application {
 
     private Stage primaryStage;
 
+    /**
+     * Start method for register
+     * @param primaryStage
+     */
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -124,6 +128,11 @@ public class register extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
+    /**
+     * Switch to main page
+     * @param username
+     */
     private void switchToMainPage(String username) {
         mainPage mainPageInstance = new mainPage();
         mainPageInstance.setLoggedInUser(username);

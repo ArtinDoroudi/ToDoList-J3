@@ -15,14 +15,24 @@ import org.example.projectj3.tables.TaskTable;
 import java.sql.Connection;
 import java.util.List;
 
+/**
+ * Adding class for adding new tasks
+ */
 public class Adding extends Application {
-    private int loggedInUserId = 1; // This should be set dynamically when navigating to this page
+    private int loggedInUserId = 1;
     private Connection connection;
 
+    /**
+     * Setter for logged in user ID
+     * @param userId userId
+     */
     public void setLoggedInUserId(int userId) {
         this.loggedInUserId = userId;
     }
 
+    /**
+     * Getter for logged in user ID
+     */
     @Override
     public void start(Stage stage) {
         connection = Database.getInstance().getConnection();
@@ -50,7 +60,6 @@ public class Adding extends Application {
 
         ComboBox<String> tagsComboBox = new ComboBox<>();
 
-        // Populate tag dropdown
         TagTable tagTable = new TagTable(connection);
         System.out.println("Fetching tags...");
         List<String> tags = tagTable.getAllTagTitles();
@@ -81,13 +90,11 @@ public class Adding extends Application {
             try {
                 TaskTable taskTable = new TaskTable(connection);
 
-                // Create the task and associate it with the logged-in user
                 boolean isTaskCreated = taskTable.createTask(task, loggedInUserId);
 
                 if (isTaskCreated) {
                     System.out.println("Task created with ID: " + task.getTaskId());
 
-                    // Link the task to the selected tag
                     int tagId = tagTable.getTagIdByTitle(taskTag);
                     if (tagId > 0) {
                         boolean tagLinked = tagTable.linkTagToTask(task.getTaskId(), tagId);
@@ -123,6 +130,10 @@ public class Adding extends Application {
         stage.show();
     }
 
+    /**
+     * Main method for Adding
+     * @param args args
+     */
     public static void main(String[] args) {
         launch();
     }

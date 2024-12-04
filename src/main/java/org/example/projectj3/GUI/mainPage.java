@@ -24,6 +24,10 @@ public class mainPage extends Application {
     private String loggedInUser; // Store logged-in username
     private int loggedInUserId;  // Store logged-in user ID
 
+    /**
+     * Setter for logged in user
+     * @param username
+     */
     public void setLoggedInUser(String username) {
         this.loggedInUser = username;
         try (Connection connection = Database.getInstance().getConnection()) {
@@ -35,6 +39,11 @@ public class mainPage extends Application {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Start method for mainPage
+     * @param primaryStage
+     */
     @Override
     public void start(Stage primaryStage) {
         Button dashboardButton = createNavigationButton("Dashboard");
@@ -79,6 +88,11 @@ public class mainPage extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Create navigation button
+     * @param text
+     * @return
+     */
     private Button createNavigationButton(String text) {
         Button button = new Button(text);
         button.setStyle("-fx-background-color: Transparent; -fx-border-color: Transparent; -fx-font-size: 23; -fx-font-weight: bold;");
@@ -86,6 +100,10 @@ public class mainPage extends Application {
         return button;
     }
 
+    /**
+     * Add hover effect to button
+     * @param button
+     */
     private void addHoverEffect(Button button) {
         button.setOnMouseEntered(e -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), button);
@@ -101,6 +119,9 @@ public class mainPage extends Application {
         });
     }
 
+    /**
+     * Open adding page
+     */
     private void openAddingPage() {
         Stage addingStage = new Stage();
         Adding addingPage = new Adding();
@@ -108,6 +129,9 @@ public class mainPage extends Application {
         addingPage.start(addingStage);
     }
 
+    /**
+     * Load tasks for user
+     */
     private void loadTasksForUser() {
         taskList.getChildren().clear();
         try (Connection connection = Database.getInstance().getConnection()) {
@@ -129,6 +153,11 @@ public class mainPage extends Application {
         }
     }
 
+    /**
+     * Create task row
+     * @param task
+     * @return
+     */
     private HBox createTaskRow(Task task) {
         CheckBox completeCheckBox = new CheckBox("Complete");
         completeCheckBox.setSelected(task.isCompleted());
@@ -162,6 +191,11 @@ public class mainPage extends Application {
     }
 
 
+    /**
+     * Create update button
+     * @param task
+     * @return
+     */
     private Button createUpdateButton(Task task) {
         Image updateIcon = new Image(getClass().getResource("/images/update4.png").toExternalForm());
         ImageView updateView = new ImageView(updateIcon);
@@ -182,6 +216,11 @@ public class mainPage extends Application {
         return updateButton;
     }
 
+    /**
+     * Create delete button
+     * @param task
+     * @return
+     */
     private Button createDeleteButton(Task task) {
         Image deleteIcon = new Image(getClass().getResource("/images/bin.png").toExternalForm());
         ImageView deleteView = new ImageView(deleteIcon);

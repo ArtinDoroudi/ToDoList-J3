@@ -14,6 +14,10 @@ public class UserTable implements UserDAO {
         this.connection = connection;
     }
 
+    /**
+     * Getter for all users
+     * @return users
+     */
     @Override
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
@@ -38,6 +42,11 @@ public class UserTable implements UserDAO {
         return users;
     }
 
+    /**
+     * Getter for user by ID
+     * @param userId
+     * @return user
+     */
     @Override
     public User getUserById(int userId) {
         String query = "SELECT * FROM user_table WHERE User_ID = ?";
@@ -59,6 +68,11 @@ public class UserTable implements UserDAO {
         return null;
     }
 
+    /**
+     * Create a user
+     * @param user
+     * @return boolean
+     */
     @Override
     public boolean createUser(User user) {
         String query = "INSERT INTO user_table (User_Name, Email, Password, is_Premium) VALUES (?, ?, ?, ?)";
@@ -82,6 +96,11 @@ public class UserTable implements UserDAO {
         return false;
     }
 
+    /**
+     * Update a user
+     * @param user
+     * @return boolean
+     */
     @Override
     public boolean updateUser(User user) {
         String query = "UPDATE user_table SET User_Name = ?, Email = ?, Password = ?, is_Premium = ? WHERE User_ID = ?";
@@ -98,6 +117,11 @@ public class UserTable implements UserDAO {
         return false;
     }
 
+    /**
+     * Delete a user
+     * @param userId
+     * @return boolean
+     */
     @Override
     public boolean deleteUser(int userId) {
         String query = "DELETE FROM user_table WHERE User_ID = ?";
@@ -110,6 +134,12 @@ public class UserTable implements UserDAO {
         return false;
     }
 
+    /**
+     * Authenticate a user
+     * @param userName
+     * @param password
+     * @return boolean
+     */
     @Override
     public boolean authenticateUser(String userName, String password) {
         String query = "SELECT * FROM user_table WHERE User_Name = ? AND Password = ?";
@@ -131,6 +161,11 @@ public class UserTable implements UserDAO {
         return false;
     }
 
+    /**
+     * Get user ID by username
+     * @param username
+     * @return userId
+     */
     public int getUserIdByUsername(String username) {
         String query = "SELECT User_ID FROM user_table WHERE User_Name = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {

@@ -14,6 +14,10 @@ public class TaskTable implements TaskDAO {
         this.connection = connection;
     }
 
+    /**
+     * Getter for all tasks
+     * @return tasks
+     */
     @Override
     public List<Task> getAllTasks() {
         List<Task> tasks = new ArrayList<>();
@@ -36,6 +40,11 @@ public class TaskTable implements TaskDAO {
         return tasks;
     }
 
+    /**
+     * Getter for tasks by user ID
+     * @param userId
+     * @return tasks
+     */
     @Override
     public List<Task> getTasksByUserId(int userId) {
         List<Task> tasks = new ArrayList<>();
@@ -60,7 +69,11 @@ public class TaskTable implements TaskDAO {
         return tasks;
     }
 
-
+    /**
+     * Getter for task by ID
+     * @param taskId
+     * @return task
+     */
     @Override
     public Task getTaskById(int taskId) {
         String query = "SELECT * FROM task_table WHERE Task_ID = ? AND deleted = 0";
@@ -82,6 +95,12 @@ public class TaskTable implements TaskDAO {
         return null;
     }
 
+    /**
+     * Create task
+     * @param task
+     * @param userId
+     * @return boolean
+     */
     @Override
     public boolean createTask(Task task, int userId) {
         String query = "INSERT INTO task_table (Task_Title, Task_Description, Task_Due_Date, is_Completed, is_Pinned) VALUES (?, ?, ?, ?, ?)";
@@ -114,6 +133,11 @@ public class TaskTable implements TaskDAO {
         return false;
     }
 
+    /**
+     * Update task
+     * @param task
+     * @return boolean
+     */
     @Override
     public boolean updateTask(Task task) {
         String query = "UPDATE task_table SET Task_Title = ?, Task_Description = ?, is_Completed = ?, is_Pinned = ? WHERE Task_ID = ?";
@@ -130,6 +154,11 @@ public class TaskTable implements TaskDAO {
         return false;
     }
 
+    /**
+     * Delete task
+     * @param taskId
+     * @return boolean
+     */
     @Override
     public boolean deleteTask(int taskId) {
         String query = "UPDATE task_table SET deleted = 1 WHERE Task_ID = ?";
@@ -142,6 +171,11 @@ public class TaskTable implements TaskDAO {
         return false;
     }
 
+    /**
+     * Toggle task completion
+     * @param taskId
+     * @return boolean
+     */
     @Override
     public boolean toggleTaskCompletion(int taskId) {
         String query = "UPDATE task_table SET is_Completed = NOT is_Completed WHERE Task_ID = ?";
@@ -154,6 +188,12 @@ public class TaskTable implements TaskDAO {
         return false;
     }
 
+    /**
+     * Assign task to user
+     * @param userId
+     * @param taskId
+     * @return boolean
+     */
     public boolean assignTaskToUser(int userId, int taskId) {
         String query = "INSERT INTO user_task_table (User_ID, Task_ID) VALUES (?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
